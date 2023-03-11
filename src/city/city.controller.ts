@@ -13,7 +13,7 @@ import { IParamsDictionary } from '../common/route.interface';
 @injectable()
 export class CityController extends BaseController {
   constructor(
-    @inject(TYPES.Logger) private loggerService: ILogger,
+    @inject(TYPES.Logger) loggerService: ILogger,
     @inject(TYPES.CityService) private cityService: CityService,
   ) {
     super(loggerService);
@@ -24,7 +24,7 @@ export class CityController extends BaseController {
         func: this.getCities,
       },
       {
-        path: '/:id',
+        path: '/create',
         method: 'post',
         func: this.createCity,
         middlewares: [new ValidateMiddleware(CreateCityDto)],
@@ -38,6 +38,7 @@ export class CityController extends BaseController {
         path: '/:id',
         method: 'put',
         func: this.editCity,
+        middlewares: [new ValidateMiddleware(EditCityDto)],
       },
     ]);
   }
