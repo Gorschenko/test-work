@@ -25,6 +25,10 @@ export class App {
     this.PORT = 8000;
   }
 
+  useMiddlewares(): void {
+    this.app.use(express.json());
+  }
+
   useRoutes(): void {
     this.app.use('/cities', this.cityController.router);
     this.app.use('/lists', this.listController.router);
@@ -35,8 +39,9 @@ export class App {
   }
 
   public async init(): Promise<void> {
-    this.useExeptionFilters();
+    this.useMiddlewares();
     this.useRoutes();
+    this.useExeptionFilters();
 
     this.server = this.app.listen(this.PORT);
     this.logger.log(`Сервер запущен на http://localhost:${this.PORT}`);

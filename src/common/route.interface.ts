@@ -9,3 +9,7 @@ export interface IControllerRoute {
 }
 
 export type ExpressReturnType = Response<any, Record<string, any>>;
+
+export interface IParamsDictionary {
+  [key: string]: string;
+}
