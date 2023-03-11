@@ -20,12 +20,15 @@ export class App {
     this.PORT = 8000;
   }
 
+  useRoutes(): void {}
+
   useExeptionFilters(): void {
     this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
   }
 
   public async init(): Promise<void> {
     this.useExeptionFilters();
+    this.useRoutes();
 
     this.server = this.app.listen(this.PORT);
     this.logger.log(`Сервер запущен на http://localhost:${this.PORT}`);
