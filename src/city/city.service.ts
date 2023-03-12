@@ -10,29 +10,32 @@ import { CityEntity } from './city.entity';
 export class CityService {
   constructor(@inject(TYPES.CityRepository) private cityRepository: CityRepository) {}
 
-  async getCities(): Promise<CityEntity[] | []> {
-    const cities = await this.cityRepository.getCities();
-    return cities;
+  async getCities(): Promise<CityEntity[]> {
+    return await this.cityRepository.getCities();
   }
 
   async createCity(city: CreateCityDto): Promise<CityEntity | null> {
+    const existedCity = await this.cityRepository.getCity(city.value);
+    if (existedCity) {
+      return null;
+    }
     const newCity = new CityEntity(city);
     return await this.cityRepository.createCity(newCity);
   }
 
-  async deleteCity(id: string): Promise<boolean> {
-    const existedCity = await this.cityRepository.getCity(id);
+  async deleteCity(value: string): Promise<boolean> {
+    const existedCity = await this.cityRepository.getCity(value);
     if (!existedCity) {
-      throw new Error('Города с таким id нет');
+      return false;
     }
-    return await this.cityRepository.deleteCity(id);
+    return await this.cityRepository.deleteCity(value);
   }
 
-  async editCity(id: string, city: EditCityDto): Promise<CityEntity | null> {
-    const existedCity = await this.cityRepository.getCity(id);
+  async editCity(value: string, city: EditCityDto): Promise<CityEntity | null> {
+    const existedCity = await this.cityRepository.getCity(value);
     if (!existedCity) {
-      throw new Error('Города с таким id нет');
+      return null;
     }
-    return await this.cityRepository.editCity(id, city);
+    return await this.cityRepository.editCity(value, city);
   }
 }

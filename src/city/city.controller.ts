@@ -30,12 +30,12 @@ export class CityController extends BaseController {
         middlewares: [new ValidateMiddleware(CreateCityDto)],
       },
       {
-        path: '/:id',
+        path: '/:value',
         method: 'delete',
         func: this.deleteCity,
       },
       {
-        path: '/:id',
+        path: '/:value',
         method: 'put',
         func: this.editCity,
         middlewares: [new ValidateMiddleware(EditCityDto)],
@@ -54,11 +54,17 @@ export class CityController extends BaseController {
     next: NextFunction,
   ): Promise<void> {
     const newCity = await this.cityService.createCity(req.body);
+    if (!newCity) {
+      return next(new Error('Такой город уже существует'));
+    }
     this.ok(res, newCity);
   }
 
   async deleteCity(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const result = await this.cityService.deleteCity(req.params.id);
+    const result = await this.cityService.deleteCity(req.params.value);
+    if (!result) {
+      return next(new Error('Город с таким VALUE отсутствует'));
+    }
     this.ok(res, result);
   }
 
@@ -67,7 +73,10 @@ export class CityController extends BaseController {
     res: Response,
     next: NextFunction,
   ): Promise<void> {
-    const editedCity = await this.cityService.editCity(req.params.id, req.body);
+    const editedCity = await this.cityService.editCity(req.params.value, req.body);
+    if (!editedCity) {
+      return next(new Error('Город с таким VALUE отсутствует'));
+    }
     this.ok(res, editedCity);
   }
 }

@@ -8,6 +8,7 @@ export const TYPES = {
 
   CityService: Symbol.for('CityService'),
   ListService: Symbol.for('ListService'),
+  DatabaseService: Symbol.for('DatabaseService'),
 
   CityRepository: Symbol.for('CityRepository'),
   ListRepository: Symbol.for('ListRepository'),

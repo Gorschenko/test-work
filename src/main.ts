@@ -3,6 +3,7 @@ import { App } from './app';
 import { CityController } from './city/city.controller';
 import { CityRepository } from './city/city.repository';
 import { CityService } from './city/city.service';
+import { DatabaseService } from './database/database.service';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { ExeptionFilter } from './errors/expetion.filter';
 import { ListController } from './list/list.controller';
@@ -27,6 +28,7 @@ const appBildings = new ContainerModule((bind: interfaces.Bind) => {
 
   bind<CityService>(TYPES.CityService).to(CityService);
   bind<ListService>(TYPES.ListService).to(ListService);
+  bind<DatabaseService>(TYPES.DatabaseService).to(DatabaseService);
 
   bind<CityRepository>(TYPES.CityRepository).to(CityRepository);
   bind<ListRepository>(TYPES.ListRepository).to(ListRepository);
