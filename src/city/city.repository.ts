@@ -3,6 +3,7 @@ import { DatabaseService } from '../database/database.service';
 import { EDatabaseFiles } from '../database/dictionary.database';
 import { TYPES } from '../types';
 import { CityEntity } from './city.entity';
+import 'reflect-metadata';
 
 @injectable()
 export class CityRepository {

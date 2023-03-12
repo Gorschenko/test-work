@@ -6,7 +6,6 @@ import { TYPES } from '../types';
 import { ILogger } from '../logger/logger.interface';
 import { ListService } from './list.service';
 import { ValidateMiddleware } from '../common/validate.middleware';
-import { EditCityDto } from '../city/dto/edit.city.dto';
 import { CreateListDto } from './dto/create.list.dto';
 
 @injectable()
@@ -26,14 +25,14 @@ export class ListController extends BaseController {
         path: '/create',
         method: 'post',
         func: this.createList,
-        middlewares: [new ValidateMiddleware(EditCityDto)],
+        middlewares: [new ValidateMiddleware(CreateListDto)],
       },
     ]);
   }
 
   async getLists(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const cities = await this.listService.getLists();
-    this.ok(res, cities);
+    const lists = await this.listService.getLists();
+    this.ok(res, lists);
   }
 
   async createList(
@@ -42,6 +41,9 @@ export class ListController extends BaseController {
     next: NextFunction,
   ): Promise<void> {
     const newList = await this.listService.createList(req.body);
+    if (!newList) {
+      return next(new Error('Такой список уже существует'));
+    }
     this.ok(res, newList);
   }
 }

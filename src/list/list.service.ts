@@ -9,13 +9,16 @@ import { ListEntity } from './list.entity';
 export class ListService {
   constructor(@inject(TYPES.ListRepository) private listRepository: ListRepository) {}
 
-  async getLists(): Promise<ListEntity[] | []> {
-    const lists = await this.listRepository.getLists();
-    return lists;
+  async getLists(): Promise<ListEntity[]> {
+    return await this.listRepository.getLists();
   }
 
   async createList(list: CreateListDto): Promise<ListEntity | null> {
-    const newCList = new ListEntity(list);
-    return await this.listRepository.createList(newCList);
+    const existedList = await this.listRepository.getList(list.shortName);
+    if (existedList) {
+      return null;
+    }
+    const newList = new ListEntity(list);
+    return await this.listRepository.createList(newList);
   }
 }
