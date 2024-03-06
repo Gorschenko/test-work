@@ -12,6 +12,9 @@ import { ListService } from './list/list.service';
 import { ILogger } from './logger/logger.interface';
 import { LoggerService } from './logger/logger.service';
 import { TYPES } from './types';
+import { IConfigService } from './configs/data';
+import { ConfigService } from './configs/config.service';
+import { MysqldbService } from './database/mysqldb.service';
 
 export interface IBootstrapReturn {
   appContainer: Container;
@@ -19,9 +22,11 @@ export interface IBootstrapReturn {
 }
 
 const appBildings = new ContainerModule((bind: interfaces.Bind) => {
-  bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
-  bind<ILogger>(TYPES.Logger).to(LoggerService).inSingletonScope();
   bind<App>(TYPES.Application).to(App);
+  bind<ILogger>(TYPES.Logger).to(LoggerService).inSingletonScope();
+  bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
+  bind<IConfigService>(TYPES.ConfigService).to(ConfigService);
+  bind<MysqldbService>(TYPES.MysqldbService).to(MysqldbService);
 
   bind<CityController>(TYPES.CityController).to(CityController);
   bind<ListController>(TYPES.ListController).to(ListController);

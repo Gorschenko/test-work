@@ -2,6 +2,8 @@ export const TYPES = {
   Application: Symbol.for('Application'),
   Logger: Symbol.for('Logger'),
   ExeptionFilter: Symbol.for('ExeptionFilter'),
+  ConfigService: Symbol.for('ConfigService'),
+  MysqldbService: Symbol.for('MysqldbService'),
 
   CityController: Symbol.for('CityController'),
   ListController: Symbol.for('ListController'),

@@ -7,7 +7,10 @@ export class LoggerService implements ILogger {
   public logger: Logger<ILogObj>;
 
   constructor() {
-    this.logger = new Logger<ILogObj>();
+    this.logger = new Logger<ILogObj>({
+      hideLogPositionForProduction: true,
+      prettyLogTimeZone: 'local',
+    });
   }
 
   log(...args: unknown[]): void {
