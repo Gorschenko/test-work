@@ -10,6 +10,8 @@ import { TYPES } from './types';
 import { IConfigService } from './configs/data';
 import { getMySqlConfig } from './configs/mysqlConfig';
 import { MysqldbService } from './database/mysqldb.service';
+import CityModel from './database/models/CityModel';
+import { ModelToFactory } from './database/models/data';
 
 @injectable()
 export class App {
@@ -49,7 +51,8 @@ export class App {
 
   connectToMysqldb(): void {
     const config = getMySqlConfig(this.configService);
-    this.mysqldbService.connect(config);
+    const models: ModelToFactory[] = [CityModel];
+    this.mysqldbService.init(config, models);
   }
 
   public async init(): Promise<void> {

@@ -1,10 +1,8 @@
+import { Dialect } from 'sequelize';
+
 export interface IConfigService {
   get: (key: string) => string;
 }
-
-import { Sequelize, Options, Dialect } from 'sequelize';
-
-const client = new Sequelize();
 
 export interface IMysqlConfig {
   host: string;
@@ -12,5 +10,5 @@ export interface IMysqlConfig {
   username: string;
   password: string;
   database: string;
-  dialect: 'mysql';
+  dialect: Dialect;
 }

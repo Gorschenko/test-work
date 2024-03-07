@@ -4,15 +4,11 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node ./dist/main.js",
-    "dev": "nodemon",
-    "dev:inspect": "nodemon -e ts,json --exec node --inspect=localhost:9222 -r ts-node/register src/main.ts",
+    "serve": "nodemon",
     "build": "tsc",
-    "lint": "eslint ./src/**",
-    "lint:fix": "eslint ./src/** --fix"
+    "format": "prettier --write \"{src}/**/*.{ts,js}\"",
+    "lint": "eslint \"{src}/**/*.{ts,js}\" --fix"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
