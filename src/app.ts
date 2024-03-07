@@ -16,7 +16,6 @@ import { ModelToFactory } from './database/models/data';
 @injectable()
 export class App {
   app: Express;
-  PORT: number;
   server: Server;
 
   constructor(
@@ -29,7 +28,6 @@ export class App {
     @inject(TYPES.ListController) private listController: ListController,
   ) {
     this.app = express();
-    this.PORT = 8000;
   }
 
   useMiddlewares(): void {
@@ -49,6 +47,12 @@ export class App {
     this.connectToMysqldb();
   }
 
+  useServer(): void {
+    const PORT = this.configService.get('APP_PORT');
+    this.server = this.app.listen(PORT);
+    this.logger.log(`Сервер запущен на порту ${PORT}`);
+  }
+
   connectToMysqldb(): void {
     const config = getMySqlConfig(this.configService);
     const models: ModelToFactory[] = [CityModel];
@@ -61,11 +65,10 @@ export class App {
       this.useRoutes();
       this.useExeptionFilters();
       this.useServices();
-
-      this.server = this.app.listen(this.PORT);
-      this.logger.log(`Сервер запущен на http://localhost:${this.PORT}`);
+      this.useServer();
     } catch (e) {
-      console.log(e);
+      this.logger.log(e);
+      process.exit(1);
     }
   }
 }
