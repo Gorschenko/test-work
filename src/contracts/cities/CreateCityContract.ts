@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 import { getNotEmptyError, getStringError } from '../../filters/errorsStrings';
+import { ICity } from '../../types/CityInterface';
 
 export namespace CreateCityContract {
   export const path = '/';
@@ -15,5 +16,7 @@ export namespace CreateCityContract {
     foundedAt: string;
   }
 
-  export class ResponseBody {}
+  export class ResponseBody {
+    city: ICity;
+  }
 }

@@ -3,6 +3,12 @@ import { ICity, ICityToCreate } from '../../types/CityInterface';
 import { MODELS_NAMES, ModelToFactory } from './data';
 
 export default class CityModel extends Model<ICity, ICityToCreate> implements ModelToFactory {
+  readonly id: number;
+  readonly name: string;
+  readonly foundedAt: string;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+
   initialize: (client: Sequelize) => void;
 
   static initialize(client: Sequelize): void {

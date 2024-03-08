@@ -12,6 +12,7 @@ import { IParamsDictionary } from '../common/data';
 import { MysqldbService } from '../database/mysqldb.service';
 import CityModel from '../database/models/CityModel';
 import { CreateCityContract } from '../contracts/cities/CreateCityContract';
+import { GetAllCitiesContract } from '../contracts/cities/GetAllCitiesContract';
 
 @injectable()
 export class CitiesController extends BaseController {
@@ -23,9 +24,9 @@ export class CitiesController extends BaseController {
     super(loggerService);
     this.bindRoutes([
       {
-        path: '/',
-        method: 'get',
-        func: this.getCities,
+        path: GetAllCitiesContract.path,
+        method: GetAllCitiesContract.method,
+        func: this.getNewCities,
       },
       {
         path: CreateCityContract.path,
@@ -47,13 +48,24 @@ export class CitiesController extends BaseController {
     ]);
   }
 
-  async createNewCity(
-    { body }: Request<unknown, unknown, CreateCityContract.RequestBody>,
-    res: Response,
-    next: NextFunction,
-  ): Promise<CreateCityContract.ResponseBody> {
+  async createNewCity({
+    body,
+  }: Request<
+    unknown,
+    unknown,
+    CreateCityContract.RequestBody
+  >): Promise<CreateCityContract.ResponseBody> {
     const city = await CityModel.create(body);
     return { city };
+  }
+
+  async getNewCities({
+    query,
+  }: Request<GetAllCitiesContract.RequestQuery>): Promise<GetAllCitiesContract.ResponseBody> {
+    const cities = await CityModel.findAll({
+      where: query,
+    });
+    return { cities };
   }
 
   async getCities(req: Request, res: Response, next: NextFunction): Promise<void> {
