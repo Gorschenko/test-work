@@ -12,6 +12,8 @@ import { getMySqlConfig } from './configs/mysqlConfig';
 import { MysqldbService } from './database/mysqldb.service';
 import CityModel from './database/models/CityModel';
 import { ModelToFactory } from './database/models/data';
+import CityListToCityModel from './database/models/CityListToCityModel';
+import CityListModel from './database/models/CityListModel';
 
 @injectable()
 export class App {
@@ -44,7 +46,7 @@ export class App {
   }
 
   useServices(): void {
-    this.connectToMysqldb();
+    this.initMysqldb();
   }
 
   useServer(): void {
@@ -53,9 +55,9 @@ export class App {
     this.logger.log(`Сервер запущен на порту ${PORT}`);
   }
 
-  connectToMysqldb(): void {
+  initMysqldb(): void {
     const config = getMySqlConfig(this.configService);
-    const models: ModelToFactory[] = [CityModel];
+    const models: ModelToFactory[] = [CityModel, CityListModel, CityListToCityModel];
     this.mysqldbService.init(config, models);
   }
 

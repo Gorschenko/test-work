@@ -1,23 +1,26 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-import { ICity } from '../../types/CityInterface';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import { MODELS_NAMES, ModelToFactory } from './data';
+import { ICityList } from '../../types/CityListInterface';
 
-export default class CityModel extends Model<ICity> implements ModelToFactory {
+export default class CityListModel extends Model<ICityList> implements ModelToFactory {
   initialize: (client: Sequelize) => void;
-
   static initialize(client: Sequelize): void {
-    CityModel.init(
+    CityListModel.init(
       {
         id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true,
         },
-        name: {
+        fullName: {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        foundedAt: {
+        shorName: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        color: {
           type: DataTypes.STRING,
           allowNull: false,
         },
@@ -34,8 +37,8 @@ export default class CityModel extends Model<ICity> implements ModelToFactory {
       },
       {
         sequelize: client,
-        modelName: MODELS_NAMES.CITY,
-        tableName: 'Cities',
+        modelName: MODELS_NAMES.CITY_LIST,
+        tableName: 'CityLists',
       },
     );
   }

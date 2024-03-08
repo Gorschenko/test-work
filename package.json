@@ -1,7 +1,7 @@
 {
   "name": "test-work",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "type": "commonjs",
   "scripts": {
     "serve": "nodemon",

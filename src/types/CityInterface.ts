@@ -1,12 +1,6 @@
-export interface ICity {
-  id: number;
-  name: string;
-  foundedAt: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { IBaseModel } from './BaseModelInterface';
 
-export interface CityToCreate extends Partial<ICity> {
+export interface ICity extends IBaseModel {
   name: string;
   foundedAt: string;
 }
