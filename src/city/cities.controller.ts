@@ -11,7 +11,7 @@ import { ILoggerService } from '../logger/data';
 import { IParamsDictionary } from '../common/data';
 
 @injectable()
-export class CityController extends BaseController {
+export class CitiesController extends BaseController {
   constructor(
     @inject(TYPES.LoggerService) loggerService: ILoggerService,
     @inject(TYPES.CityService) private cityService: CityService,

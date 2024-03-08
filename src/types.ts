@@ -6,7 +6,7 @@ export const TYPES = {
   ConfigService: Symbol.for('ConfigService'),
   MysqldbService: Symbol.for('MysqldbService'),
 
-  CityController: Symbol.for('CityController'),
+  CitiesController: Symbol.for('CitiesController'),
   ListController: Symbol.for('ListController'),
 
   CityService: Symbol.for('CityService'),

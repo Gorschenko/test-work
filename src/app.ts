@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import { Server } from 'http';
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
-import { CityController } from './city/city.controller';
+import { CitiesController } from './city/cities.controller';
 import { ListController } from './list/list.controller';
 import { TYPES } from './types';
 import { IConfigService } from './configs/data';
@@ -28,7 +28,7 @@ export class App {
     @inject(TYPES.ConfigService) private configService: IConfigService,
     @inject(TYPES.MysqldbService) private mysqldbService: MysqldbService,
 
-    @inject(TYPES.CityController) private cityController: CityController,
+    @inject(TYPES.CitiesController) private citiesController: CitiesController,
     @inject(TYPES.ListController) private listController: ListController,
   ) {
     this.app = express();
@@ -41,7 +41,7 @@ export class App {
   }
 
   useRoutes(): void {
-    this.app.use('/cities', this.cityController.router);
+    this.app.use('/cities', this.citiesController.router);
     this.app.use('/lists', this.listController.router);
   }
 
