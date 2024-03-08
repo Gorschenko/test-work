@@ -7,8 +7,8 @@ import { CityService } from './city.service';
 import { ValidateMiddleware } from '../common/validate.middleware';
 import { CreateCityDto } from './dto/create.city.dto';
 import { EditCityDto } from './dto/edit.city.dto';
-import { IParamsDictionary } from '../common/route.interface';
 import { ILoggerService } from '../logger/data';
+import { IParamsDictionary } from '../common/data';
 
 @injectable()
 export class CityController extends BaseController {

@@ -2,7 +2,7 @@ import { HttpStatus } from './data';
 
 export interface IHttpError {
   message: string;
-  status: number;
+  status?: number;
 }
 
 export class HttpError implements IHttpError {

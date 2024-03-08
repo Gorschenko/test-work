@@ -14,6 +14,7 @@ import CityListToCityModel from './database/models/CityListToCityModel';
 import CityListModel from './database/models/CityListModel';
 import { IExceptionFilter } from './filters/data';
 import { ILoggerService } from './logger/data';
+import { HttpLoggerMiddleware } from './common/httpLogger.middleware';
 
 @injectable()
 export class App {
@@ -35,6 +36,8 @@ export class App {
 
   useMiddlewares(): void {
     this.app.use(express.json());
+    const httpLoggerMiddleware = new HttpLoggerMiddleware(this.loggerService);
+    this.app.use(httpLoggerMiddleware.execute.bind(httpLoggerMiddleware));
   }
 
   useRoutes(): void {
