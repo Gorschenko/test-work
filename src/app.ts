@@ -3,9 +3,7 @@ import { Server } from 'http';
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { CityController } from './city/city.controller';
-import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { ListController } from './list/list.controller';
-import { ILogger } from './logger/logger.interface';
 import { TYPES } from './types';
 import { IConfigService } from './configs/data';
 import { getMySqlConfig } from './configs/mysqlConfig';
@@ -14,6 +12,8 @@ import CityModel from './database/models/CityModel';
 import { ModelToFactory } from './database/models/data';
 import CityListToCityModel from './database/models/CityListToCityModel';
 import CityListModel from './database/models/CityListModel';
+import { IExceptionFilter } from './filters/data';
+import { ILoggerService } from './logger/data';
 
 @injectable()
 export class App {
@@ -21,8 +21,9 @@ export class App {
   server: Server;
 
   constructor(
-    @inject(TYPES.Logger) private logger: ILogger,
-    @inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
+    @inject(TYPES.LoggerService) private loggerService: ILoggerService,
+    @inject(TYPES.BaseExceptionFilter) private baseExceptionFilter: IExceptionFilter,
+    @inject(TYPES.HttpExceptionFilter) private httpExceptionFilter: IExceptionFilter,
     @inject(TYPES.ConfigService) private configService: IConfigService,
     @inject(TYPES.MysqldbService) private mysqldbService: MysqldbService,
 
@@ -41,18 +42,19 @@ export class App {
     this.app.use('/lists', this.listController.router);
   }
 
-  useExeptionFilters(): void {
-    this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
+  useExceptionFilters(): void {
+    this.app.use(this.baseExceptionFilter.catch.bind(this.baseExceptionFilter));
+    this.app.use(this.httpExceptionFilter.catch.bind(this.httpExceptionFilter));
   }
 
   useServices(): void {
     this.initMysqldb();
   }
 
-  useServer(): void {
+  useServers(): void {
     const PORT = this.configService.get('APP_PORT');
     this.server = this.app.listen(PORT);
-    this.logger.log(`Сервер запущен на порту ${PORT}`);
+    this.loggerService.log(`Сервер запущен на порту ${PORT}`);
   }
 
   initMysqldb(): void {
@@ -65,11 +67,11 @@ export class App {
     try {
       this.useMiddlewares();
       this.useRoutes();
-      this.useExeptionFilters();
+      this.useExceptionFilters();
       this.useServices();
-      this.useServer();
+      this.useServers();
     } catch (e) {
-      this.logger.log(e);
+      this.loggerService.log(e);
       process.exit(1);
     }
   }

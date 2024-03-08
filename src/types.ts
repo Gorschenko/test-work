@@ -1,7 +1,8 @@
 export const TYPES = {
   Application: Symbol.for('Application'),
-  Logger: Symbol.for('Logger'),
-  ExeptionFilter: Symbol.for('ExeptionFilter'),
+  LoggerService: Symbol.for('LoggerService'),
+  BaseExceptionFilter: Symbol.for('BaseExceptionFilter'),
+  HttpExceptionFilter: Symbol.for('HttpExceptionFilter'),
   ConfigService: Symbol.for('ConfigService'),
   MysqldbService: Symbol.for('MysqldbService'),
 

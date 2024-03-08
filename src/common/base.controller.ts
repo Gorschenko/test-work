@@ -1,13 +1,13 @@
 import { Router, Response } from 'express';
 import { injectable } from 'inversify';
-import { ILogger } from '../logger/logger.interface';
 import { ExpressReturnType, IControllerRoute } from './route.interface';
+import { ILoggerService } from '../logger/data';
 
 @injectable()
 export abstract class BaseController {
   private readonly _router: Router;
 
-  constructor(private logger: ILogger) {
+  constructor(private loggerService: ILoggerService) {
     this._router = Router();
   }
 
@@ -29,7 +29,7 @@ export abstract class BaseController {
 
   protected bindRoutes(routes: IControllerRoute[]): void {
     for (const route of routes) {
-      this.logger.log(`[${route.method}] ${route.path}`);
+      this.loggerService.log(`[${route.method}] ${route.path}`);
       const middleware = route.middlewares?.map((m) => m.execute.bind(m));
       const handler = route.func.bind(this);
       const pipeline = middleware ? [...middleware, handler] : handler;

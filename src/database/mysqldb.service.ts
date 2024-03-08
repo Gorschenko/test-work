@@ -2,14 +2,14 @@ import { inject, injectable } from 'inversify';
 import { Sequelize } from 'sequelize';
 import { IMysqlConfig } from '../configs/data';
 import { TYPES } from '../types';
-import { ILogger } from '../logger/logger.interface';
 import { ModelToFactory } from './models/data';
+import { ILoggerService } from '../logger/data';
 
 @injectable()
 export class MysqldbService {
   private client: Sequelize;
 
-  constructor(@inject(TYPES.Logger) private readonly loggerService: ILogger) {}
+  constructor(@inject(TYPES.LoggerService) private readonly loggerService: ILoggerService) {}
 
   async init(config: IMysqlConfig, models: ModelToFactory[]): Promise<void> {
     this.connect(config);

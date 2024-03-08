@@ -3,15 +3,15 @@ import { BaseController } from '../common/base.controller';
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../types';
-import { ILogger } from '../logger/logger.interface';
 import { ListService } from './list.service';
 import { ValidateMiddleware } from '../common/validate.middleware';
 import { CreateListDto } from './dto/create.list.dto';
+import { ILoggerService } from '../logger/data';
 
 @injectable()
 export class ListController extends BaseController {
   constructor(
-    @inject(TYPES.Logger) loggerService: ILogger,
+    @inject(TYPES.LoggerService) loggerService: ILoggerService,
     @inject(TYPES.ListService) private listService: ListService,
   ) {
     super(loggerService);

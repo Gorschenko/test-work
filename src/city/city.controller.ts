@@ -3,17 +3,17 @@ import { BaseController } from '../common/base.controller';
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../types';
-import { ILogger } from '../logger/logger.interface';
 import { CityService } from './city.service';
 import { ValidateMiddleware } from '../common/validate.middleware';
 import { CreateCityDto } from './dto/create.city.dto';
 import { EditCityDto } from './dto/edit.city.dto';
 import { IParamsDictionary } from '../common/route.interface';
+import { ILoggerService } from '../logger/data';
 
 @injectable()
 export class CityController extends BaseController {
   constructor(
-    @inject(TYPES.Logger) loggerService: ILogger,
+    @inject(TYPES.LoggerService) loggerService: ILoggerService,
     @inject(TYPES.CityService) private cityService: CityService,
   ) {
     super(loggerService);
