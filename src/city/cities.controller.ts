@@ -9,11 +9,15 @@ import { CreateCityDto } from './dto/create.city.dto';
 import { EditCityDto } from './dto/edit.city.dto';
 import { ILoggerService } from '../logger/data';
 import { IParamsDictionary } from '../common/data';
+import { MysqldbService } from '../database/mysqldb.service';
+import CityModel from '../database/models/CityModel';
+import { CreateCityContract } from '../contracts/cities/CreateCityContract';
 
 @injectable()
 export class CitiesController extends BaseController {
   constructor(
     @inject(TYPES.LoggerService) loggerService: ILoggerService,
+    @inject(TYPES.MysqldbService) mysqldbService: MysqldbService,
     @inject(TYPES.CityService) private cityService: CityService,
   ) {
     super(loggerService);
@@ -24,10 +28,10 @@ export class CitiesController extends BaseController {
         func: this.getCities,
       },
       {
-        path: '/create',
-        method: 'post',
-        func: this.createCity,
-        middlewares: [new ValidateMiddleware(CreateCityDto)],
+        path: CreateCityContract.path,
+        method: CreateCityContract.method,
+        func: this.createNewCity,
+        middlewares: [new ValidateMiddleware(CreateCityContract.RequestBody)],
       },
       {
         path: '/:value',
@@ -43,13 +47,22 @@ export class CitiesController extends BaseController {
     ]);
   }
 
+  async createNewCity(
+    { body }: Request<unknown, unknown, CreateCityContract.RequestBody>,
+    res: Response,
+    next: NextFunction,
+  ): Promise<CreateCityContract.ResponseBody> {
+    const city = await CityModel.create(body);
+    return { city };
+  }
+
   async getCities(req: Request, res: Response, next: NextFunction): Promise<void> {
     const cities = await this.cityService.getCities();
     this.ok(res, cities);
   }
 
   async createCity(
-    req: Request<{}, {}, CreateCityDto>,
+    req: Request<unknown, unknown, CreateCityDto>,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
@@ -69,7 +82,7 @@ export class CitiesController extends BaseController {
   }
 
   async editCity(
-    req: Request<IParamsDictionary, {}, EditCityDto>,
+    req: Request<IParamsDictionary, unknown, EditCityDto>,
     res: Response,
     next: NextFunction,
   ): Promise<void> {

@@ -16,16 +16,13 @@ export abstract class BaseController {
     return this._router;
   }
 
-  public send<T>(res: Response, code: number, message: T): ExpressReturnType {
+  public send(res: Response, status: HttpStatus, message: unknown): ExpressReturnType {
     res.type('application/json');
-    return res.status(code).json(message);
+    return res.status(status).json(message);
   }
 
-  public ok<T>(res: Response, message: T): ExpressReturnType {
-    return this.send(res, HttpStatus.SUCCESS, {
-      ok: true,
-      payload: message,
-    });
+  public ok(res: Response, message: unknown): ExpressReturnType {
+    return this.send(res, HttpStatus.SUCCESS, message);
   }
 
   protected bindRoutes(routes: IControllerRoute[]): void {

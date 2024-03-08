@@ -1,8 +1,8 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
-import { ICity } from '../../types/CityInterface';
+import { ICity, ICityToCreate } from '../../types/CityInterface';
 import { MODELS_NAMES, ModelToFactory } from './data';
 
-export default class CityModel extends Model<ICity> implements ModelToFactory {
+export default class CityModel extends Model<ICity, ICityToCreate> implements ModelToFactory {
   initialize: (client: Sequelize) => void;
 
   static initialize(client: Sequelize): void {

@@ -15,6 +15,7 @@ import CityListModel from './database/models/CityListModel';
 import { IExceptionFilter } from './filters/data';
 import { ILoggerService } from './logger/data';
 import { HttpLoggerMiddleware } from './common/httpLogger.middleware';
+import { ROUTES } from './contracts/data';
 
 @injectable()
 export class App {
@@ -27,7 +28,6 @@ export class App {
     @inject(TYPES.HttpExceptionFilter) private httpExceptionFilter: IExceptionFilter,
     @inject(TYPES.ConfigService) private configService: IConfigService,
     @inject(TYPES.MysqldbService) private mysqldbService: MysqldbService,
-
     @inject(TYPES.CitiesController) private citiesController: CitiesController,
     @inject(TYPES.ListController) private listController: ListController,
   ) {
@@ -41,8 +41,8 @@ export class App {
   }
 
   useRoutes(): void {
-    this.app.use('/cities', this.citiesController.router);
-    this.app.use('/lists', this.listController.router);
+    this.app.use(ROUTES.CITIES, this.citiesController.router);
+    this.app.use(ROUTES.CITIES_LISTS, this.listController.router);
   }
 
   useExceptionFilters(): void {

@@ -36,7 +36,7 @@ export class ListController extends BaseController {
   }
 
   async createList(
-    req: Request<{}, {}, CreateListDto>,
+    req: Request<unknown, unknown, CreateListDto>,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
