@@ -29,7 +29,7 @@ export class MysqldbService {
   }
 
   async syncModels(): Promise<void> {
-    await this.client.sync({ force: true });
+    await this.client.sync({ alter: true });
   }
 
   getInstance(): Sequelize {
