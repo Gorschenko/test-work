@@ -1,6 +1,5 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
-import { ICity } from '../../types/CityInterface';
-import { BaseModel, MODELS_NAMES } from './data';
+import { MODELS_NAMES } from './data';
 
 export default class CityModel extends Model {
   readonly id: number;

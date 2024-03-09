@@ -1,8 +1,7 @@
-import { DataTypes, Sequelize } from 'sequelize';
-import { BaseModel, MODELS_NAMES } from './data';
-import { ICityList } from '../../types/CityListInterface';
+import { DataTypes, Model, Sequelize } from 'sequelize';
+import { MODELS_NAMES } from './data';
 
-export default class CityListModel extends BaseModel<ICityList> {
+export default class CityListModel extends Model {
   static initialize(client: Sequelize): void {
     CityListModel.init(
       {

@@ -9,11 +9,10 @@ export const TYPES = {
   CitiesController: Symbol.for('CitiesController'),
   ListController: Symbol.for('ListController'),
 
-  CityService: Symbol.for('CityService'),
+  CitiesService: Symbol.for('CitiesService'),
   ListService: Symbol.for('ListService'),
   DatabaseService: Symbol.for('DatabaseService'),
 
-  CityRepository: Symbol.for('CityRepository'),
-  NewCityRepository: Symbol.for('NewCityRepository'),
+  CitiesRepository: Symbol.for('CitiesRepository'),
   ListRepository: Symbol.for('ListRepository'),
 };

@@ -1,107 +1,99 @@
-import { Response, Request, NextFunction } from 'express';
+import { Request } from 'express';
 import { BaseController } from '../common/base.controller';
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../types';
-import { CityService } from './city.service';
+import { CitiesService } from './city.service';
 import { ValidateMiddleware } from '../common/validate.middleware';
-import { CreateCityDto } from './dto/create.city.dto';
-import { EditCityDto } from './dto/edit.city.dto';
 import { ILoggerService } from '../logger/data';
-import { IParamsDictionary } from '../common/data';
-import { MysqldbService } from '../database/mysqldb.service';
-import CityModel from '../database/models/CityModel';
 import { CreateCityContract } from '../contracts/cities/CreateCityContract';
 import { GetAllCitiesContract } from '../contracts/cities/GetAllCitiesContract';
+import { DeleteCityContract } from '../contracts/cities/DeleteCityContract';
+import { UpdateCityContract } from '../contracts/cities/UpdateCityContract';
 
 @injectable()
 export class CitiesController extends BaseController {
   constructor(
     @inject(TYPES.LoggerService) loggerService: ILoggerService,
-    @inject(TYPES.MysqldbService) mysqldbService: MysqldbService,
-    @inject(TYPES.CityService) private cityService: CityService,
+    @inject(TYPES.CitiesService) private citiesService: CitiesService,
   ) {
     super(loggerService);
     this.bindRoutes([
       {
         path: GetAllCitiesContract.path,
         method: GetAllCitiesContract.method,
-        func: this.getNewCities,
+        func: this.findAll,
       },
       {
         path: CreateCityContract.path,
         method: CreateCityContract.method,
-        func: this.createNewCity,
+        func: this.create,
         middlewares: [new ValidateMiddleware(CreateCityContract.RequestBody)],
       },
       {
-        path: '/:value',
-        method: 'delete',
-        func: this.deleteCity,
+        path: DeleteCityContract.path,
+        method: DeleteCityContract.method,
+        func: this.delete,
+        middlewares: [
+          new ValidateMiddleware(DeleteCityContract.RequestParams, 'params'),
+          new ValidateMiddleware(DeleteCityContract.RequestQuery, 'query'),
+        ],
       },
       {
-        path: '/:value',
-        method: 'put',
-        func: this.editCity,
-        middlewares: [new ValidateMiddleware(EditCityDto)],
+        path: UpdateCityContract.path,
+        method: UpdateCityContract.method,
+        func: this.update,
+        middlewares: [
+          new ValidateMiddleware(UpdateCityContract.RequestParams, 'params'),
+          new ValidateMiddleware(UpdateCityContract.RequestBody),
+        ],
       },
     ]);
   }
 
-  async createNewCity({
+  async findAll(): Promise<GetAllCitiesContract.ResponseBody> {
+    const cities = await this.citiesService.findAll();
+    return {
+      cities,
+    };
+  }
+
+  async create({
     body,
   }: Request<
     unknown,
     unknown,
     CreateCityContract.RequestBody
   >): Promise<CreateCityContract.ResponseBody> {
-    const city = await this.cityService.createNewCity(body);
+    const city = await this.citiesService.create(body);
     return {
       city,
     };
   }
 
-  async getNewCities({ query }: Request<GetAllCitiesContract.RequestQuery>) {
-    // const cities = await CityModel.findAll({
-    //   where: query,
-    // });
-    // return { cities };
+  async delete({
+    params,
+    query,
+  }: Request<
+    DeleteCityContract.RequestParams,
+    unknown,
+    unknown,
+    DeleteCityContract.RequestQuery
+  >): Promise<DeleteCityContract.ResponseBody> {
+    const count = await this.citiesService.delete({ ...params, ...query });
+    return {
+      count,
+    };
   }
 
-  async getCities(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const cities = await this.cityService.getCities();
-    this.ok(res, cities);
-  }
-
-  async createCity(
-    req: Request<unknown, unknown, CreateCityDto>,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    const newCity = await this.cityService.createCity(req.body);
-    if (!newCity) {
-      return next(new Error('Такой город уже существует'));
-    }
-    this.ok(res, newCity);
-  }
-
-  async deleteCity(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const result = await this.cityService.deleteCity(req.params.value);
-    if (!result) {
-      return next(new Error('Город с таким VALUE отсутствует'));
-    }
-    this.ok(res, result);
-  }
-
-  async editCity(
-    req: Request<IParamsDictionary, unknown, EditCityDto>,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    const editedCity = await this.cityService.editCity(req.params.value, req.body);
-    if (!editedCity) {
-      return next(new Error('Город с таким VALUE отсутствует'));
-    }
-    this.ok(res, editedCity);
+  async update({
+    params,
+    body,
+  }: Request<
+    UpdateCityContract.RequestParams,
+    unknown,
+    UpdateCityContract.RequestBody
+  >): Promise<UpdateCityContract.ResponseBody> {
+    return await this.citiesService.update(params, body);
   }
 }

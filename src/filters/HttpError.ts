@@ -1,16 +1,19 @@
 import { HttpStatus } from './data';
 
-export interface IHttpError {
-  message: string;
-  status?: number;
+export interface IHttpErrorOptions {
+  status: number;
 }
 
-export class HttpError implements IHttpError {
+const DEFAULT_ERROR_OPTIONS = {
+  status: HttpStatus.BAD_REQUEST,
+};
+
+export class HttpError {
   message: string;
   status: number;
 
-  constructor({ message, status = HttpStatus.BAD_REQUEST }: IHttpError) {
+  constructor(message: string, options: IHttpErrorOptions = DEFAULT_ERROR_OPTIONS) {
     this.message = message;
-    this.status = status;
+    this.status = options.status;
   }
 }

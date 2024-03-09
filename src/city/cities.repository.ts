@@ -4,7 +4,7 @@ import { BaseRepository } from '../database/base.repository';
 import CityModel from '../database/models/CityModel';
 
 @injectable()
-export class NewCityRepository extends BaseRepository<CityModel> {
+export class CitiesRepository extends BaseRepository<CityModel> {
   constructor(model: typeof CityModel) {
     super(model);
   }

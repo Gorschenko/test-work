@@ -15,10 +15,12 @@ export interface IResponseErrorObj {
 export class BaseExceptionFilter implements IExceptionFilter {
   constructor(@inject(TYPES.LoggerService) private loggerService: ILoggerService) {}
 
-  catch(err: Error, req: Request, res: Response, next: NextFunction): void {
+  catch(err: unknown, req: Request, res: Response, next: NextFunction): void {
     if (err instanceof Error) {
       this.loggerService.error(`${err.message}`);
       res.status(HttpStatus.INTERNAL_SERVER).send({ message: err.message });
+    } else {
+      next(err);
     }
   }
 }

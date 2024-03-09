@@ -16,10 +16,12 @@ export interface IResponseErrorObj {
 export class HttpExceptionFilter implements IExceptionFilter {
   constructor(@inject(TYPES.LoggerService) private loggerService: ILoggerService) {}
 
-  catch(err: HttpError, req: Request, res: Response, next: NextFunction): void {
+  catch(err: unknown, req: Request, res: Response, next: NextFunction): void {
     if (err instanceof HttpError) {
       this.loggerService.error(`${err.message}`);
       res.status(err.status).send({ message: err.message });
+    } else {
+      next(err);
     }
   }
 }

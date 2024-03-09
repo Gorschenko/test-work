@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import { ArrayMinSize, IsArray, IsString, ValidateNested } from 'class-validator';
-import { EditCityDto } from '../../city/dto/edit.city.dto';
 
 export class CreateListDto {
   @IsString()
@@ -15,6 +14,6 @@ export class CreateListDto {
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
   @IsArray()
-  @Type(() => EditCityDto)
-  cities: EditCityDto[];
+  @Type(() => CreateListDto)
+  cities: [];
 }

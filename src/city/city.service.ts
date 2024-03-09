@@ -1,50 +1,42 @@
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../types';
 import 'reflect-metadata';
-import { CityRepository } from './city.repository';
-import { CreateCityDto } from './dto/create.city.dto';
-import { EditCityDto } from './dto/edit.city.dto';
-import { CityEntity } from './city.entity';
-import { ICityToCreate } from '../types/CityInterface';
-import { NewCityRepository } from './newCity.repository';
+import { ICity, ICityToCreate } from '../types/CityInterface';
+import { CitiesRepository } from './cities.repository';
+import { HttpError } from '../filters/HttpError';
+import { getExistedEntityError } from '../filters/errorsStrings';
 
 @injectable()
-export class CityService {
-  constructor(
-    @inject(TYPES.CityRepository) private cityRepository: CityRepository,
-    @inject(TYPES.NewCityRepository) private newCityRepository: NewCityRepository,
-  ) {}
+export class CitiesService {
+  constructor(@inject(TYPES.CitiesRepository) private citiesRepository: CitiesRepository) {}
 
-  async getCities(): Promise<CityEntity[]> {
-    return await this.cityRepository.getCities();
+  async findAll(): Promise<ICity[]> {
+    return this.citiesRepository.findAll();
   }
 
-  async createNewCity(dto: ICityToCreate) {
-    return this.newCityRepository.create(dto);
-  }
-
-  async createCity(city: CreateCityDto): Promise<CityEntity | null> {
-    const existedCity = await this.cityRepository.getCity(city.value);
+  async create(data: ICityToCreate): Promise<ICity> {
+    const existedCity = await this.citiesRepository.findOne({
+      where: {
+        name: data.name,
+      },
+    });
     if (existedCity) {
-      return null;
+      throw new HttpError(getExistedEntityError('city'));
     }
-    const newCity = new CityEntity(city);
-    return await this.cityRepository.createCity(newCity);
+    return this.citiesRepository.create(data);
   }
 
-  async deleteCity(value: string): Promise<boolean> {
-    const existedCity = await this.cityRepository.getCity(value);
-    if (!existedCity) {
-      return false;
+  async delete(filters: Partial<ICity> & { cityId?: number }): Promise<number> {
+    if (filters.cityId) {
+      filters.id = filters.cityId;
+      delete filters.cityId;
     }
-    return await this.cityRepository.deleteCity(value);
+    return this.citiesRepository.findAndDelete({ where: filters });
   }
 
-  async editCity(value: string, city: EditCityDto): Promise<CityEntity | null> {
-    const existedCity = await this.cityRepository.getCity(value);
-    if (!existedCity) {
-      return null;
-    }
-    return await this.cityRepository.editCity(value, city);
+  async update(filters: { cityId?: number }, update: Partial<ICity>) {
+    return this.citiesRepository.findAndUpdate(update, {
+      where: { id: filters.cityId },
+    });
   }
 }

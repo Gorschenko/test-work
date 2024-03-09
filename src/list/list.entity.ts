@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { EditCityDto } from '../city/dto/edit.city.dto';
 
 export class ListEntity {
   shortName: string;
   fullName: string;
   color: string;
-  cities: EditCityDto[];
+  cities: [];
 
   constructor(list: any) {
     this.shortName = list.shortName;

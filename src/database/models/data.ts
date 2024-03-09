@@ -12,10 +12,6 @@ export interface IBaseModel {
   updatedAt: Date;
 }
 
-export class BaseModel<T extends IBaseModel> extends Model<T> {
-  initialize: (client: Sequelize) => void;
-}
-
 export interface ModelToFactory {
   initialize: (client: Sequelize) => void;
 }

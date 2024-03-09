@@ -21,7 +21,7 @@ export class BaseRepository<T extends Model<T>> {
     return this.model.update<T>(attributes, { ...options, returning: true });
   }
 
-  async findAndDelete(options: DestroyOptions<T>) {
+  async findAndDelete(options: DestroyOptions<T> = {}) {
     return this.model.destroy<T>(options);
   }
 }

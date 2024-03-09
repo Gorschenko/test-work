@@ -8,5 +8,5 @@ export enum HttpStatus {
 }
 
 export interface IExceptionFilter {
-  catch: (err: any, req: Request, res: Response, next: NextFunction) => void;
+  catch: (err: unknown, req: Request, res: Response, next: NextFunction) => void;
 }

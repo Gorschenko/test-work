@@ -16,7 +16,7 @@ import { IExceptionFilter } from './filters/data';
 import { ILoggerService } from './logger/data';
 import { HttpLoggerMiddleware } from './common/httpLogger.middleware';
 import { ROUTES } from './contracts/data';
-import { BaseModel, ModelToFactory } from './database/models/data';
+import { ModelToFactory } from './database/models/data';
 
 @injectable()
 export class App {

@@ -1,8 +1,7 @@
 import { ContainerModule, interfaces } from 'inversify';
 import { App } from './app';
 import { CitiesController } from './city/cities.controller';
-import { CityRepository } from './city/city.repository';
-import { CityService } from './city/city.service';
+import { CitiesService } from './city/city.service';
 import { DatabaseService } from './database/database.service';
 import { ListController } from './list/list.controller';
 import { ListRepository } from './list/list.repository';
@@ -16,7 +15,7 @@ import { BaseExceptionFilter } from './filters/base.filter';
 import { HttpExceptionFilter } from './filters/http.filter';
 import { IExceptionFilter } from './filters/data';
 import { ILoggerService } from './logger/data';
-import { NewCityRepository } from './city/newCity.repository';
+import { CitiesRepository } from './city/cities.repository';
 import CityModel from './database/models/CityModel';
 
 export const BINDINGS = new ContainerModule((bind: interfaces.Bind) => {
@@ -30,13 +29,12 @@ export const BINDINGS = new ContainerModule((bind: interfaces.Bind) => {
   bind<CitiesController>(TYPES.CitiesController).to(CitiesController);
   bind<ListController>(TYPES.ListController).to(ListController);
 
-  bind<CityService>(TYPES.CityService).to(CityService);
+  bind<CitiesService>(TYPES.CitiesService).to(CitiesService);
   bind<ListService>(TYPES.ListService).to(ListService);
   bind<DatabaseService>(TYPES.DatabaseService).to(DatabaseService);
 
-  bind<CityRepository>(TYPES.CityRepository).to(CityRepository);
-  bind<NewCityRepository>(TYPES.NewCityRepository).toDynamicValue(
-    () => new NewCityRepository(CityModel),
+  bind<CitiesRepository>(TYPES.CitiesRepository).toDynamicValue(
+    () => new CitiesRepository(CityModel),
   );
   bind<ListRepository>(TYPES.ListRepository).to(ListRepository);
 });
