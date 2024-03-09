@@ -1,12 +1,10 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import { ICityListToCity } from '../../types/CityListToCityInterface';
-import { MODELS_NAMES, ModelToFactory } from './data';
+import { BaseModel, MODELS_NAMES } from './data';
 import CityModel from './CityModel';
 import CityListModel from './CityListModel';
 
-export default class CityListToCityModel extends Model<ICityListToCity> implements ModelToFactory {
-  initialize: (client: Sequelize) => void;
-
+export default class CityListToCityModel extends BaseModel<ICityListToCity> {
   static initialize(client: Sequelize): void {
     CityListToCityModel.init(
       {

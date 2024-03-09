@@ -16,6 +16,8 @@ import { BaseExceptionFilter } from './filters/base.filter';
 import { HttpExceptionFilter } from './filters/http.filter';
 import { IExceptionFilter } from './filters/data';
 import { ILoggerService } from './logger/data';
+import { NewCityRepository } from './city/newCity.repository';
+import CityModel from './database/models/CityModel';
 
 export const BINDINGS = new ContainerModule((bind: interfaces.Bind) => {
   bind<App>(TYPES.Application).to(App);
@@ -33,5 +35,8 @@ export const BINDINGS = new ContainerModule((bind: interfaces.Bind) => {
   bind<DatabaseService>(TYPES.DatabaseService).to(DatabaseService);
 
   bind<CityRepository>(TYPES.CityRepository).to(CityRepository);
+  bind<NewCityRepository>(TYPES.NewCityRepository).toDynamicValue(
+    () => new NewCityRepository(CityModel),
+  );
   bind<ListRepository>(TYPES.ListRepository).to(ListRepository);
 });

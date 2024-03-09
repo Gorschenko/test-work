@@ -1,9 +1,10 @@
 import { inject, injectable } from 'inversify';
-import { Sequelize } from 'sequelize';
+import { Model, Sequelize } from 'sequelize';
 import { IMysqlConfig } from '../configs/data';
 import { TYPES } from '../types';
-import { ModelToFactory } from './models/data';
 import { ILoggerService } from '../logger/data';
+import { BaseModel, ModelToFactory } from './models/data';
+import { Constructable } from '../types/objects';
 
 @injectable()
 export class MysqldbService {

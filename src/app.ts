@@ -1,3 +1,4 @@
+import { Constructable } from './types/objects';
 import express, { Express } from 'express';
 import { Server } from 'http';
 import { inject, injectable } from 'inversify';
@@ -9,13 +10,13 @@ import { IConfigService } from './configs/data';
 import { getMySqlConfig } from './configs/mysqlConfig';
 import { MysqldbService } from './database/mysqldb.service';
 import CityModel from './database/models/CityModel';
-import { ModelToFactory } from './database/models/data';
 import CityListToCityModel from './database/models/CityListToCityModel';
 import CityListModel from './database/models/CityListModel';
 import { IExceptionFilter } from './filters/data';
 import { ILoggerService } from './logger/data';
 import { HttpLoggerMiddleware } from './common/httpLogger.middleware';
 import { ROUTES } from './contracts/data';
+import { BaseModel, ModelToFactory } from './database/models/data';
 
 @injectable()
 export class App {
@@ -50,8 +51,8 @@ export class App {
     this.app.use(this.httpExceptionFilter.catch.bind(this.httpExceptionFilter));
   }
 
-  useServices(): void {
-    this.initMysqldb();
+  async useServices() {
+    await this.initMysqldb();
   }
 
   useServers(): void {
@@ -60,10 +61,10 @@ export class App {
     this.loggerService.log(`Сервер запущен на порту ${PORT}`);
   }
 
-  initMysqldb(): void {
+  async initMysqldb() {
     const config = getMySqlConfig(this.configService);
     const models: ModelToFactory[] = [CityModel, CityListModel, CityListToCityModel];
-    this.mysqldbService.init(config, models);
+    await this.mysqldbService.init(config, models);
   }
 
   public async init(): Promise<void> {
@@ -71,7 +72,7 @@ export class App {
       this.useMiddlewares();
       this.useRoutes();
       this.useExceptionFilters();
-      this.useServices();
+      await this.useServices();
       this.useServers();
     } catch (e) {
       this.loggerService.log(e);

@@ -1,4 +1,4 @@
-import { IBaseModel } from './BaseModelInterface';
+import { IBaseModel } from '../database/models/data';
 
 export interface ICityListToCity extends IBaseModel {
   cityId: number;

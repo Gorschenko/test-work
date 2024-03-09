@@ -14,5 +14,6 @@ export const TYPES = {
   DatabaseService: Symbol.for('DatabaseService'),
 
   CityRepository: Symbol.for('CityRepository'),
+  NewCityRepository: Symbol.for('NewCityRepository'),
   ListRepository: Symbol.for('ListRepository'),
 };

@@ -1,4 +1,4 @@
-import { IBaseModel } from './BaseModelInterface';
+import { IBaseModel } from '../database/models/data';
 
 export interface ICity extends IBaseModel {
   name: string;

@@ -21,7 +21,7 @@ export class HttpLoggerMiddleware implements IMiddleware {
     const { statusCode } = res;
 
     return `
-      METHOD: ${method} URL: ${originalUrl} STATUS: ${statusCode} IP: ${ip} TIME: ${processingTime}
+      METHOD: ${method} URL: ${originalUrl} STATUS: ${statusCode} IP: ${ip} TIME: ${processingTime} ms
       REQUEST HEADERS: ${JSON.stringify(headers)}
       REQUEST BODY: ${JSON.stringify(body)}
       `;

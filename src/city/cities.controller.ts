@@ -55,17 +55,17 @@ export class CitiesController extends BaseController {
     unknown,
     CreateCityContract.RequestBody
   >): Promise<CreateCityContract.ResponseBody> {
-    const city = await CityModel.create(body);
-    return { city };
+    const city = await this.cityService.createNewCity(body);
+    return {
+      city,
+    };
   }
 
-  async getNewCities({
-    query,
-  }: Request<GetAllCitiesContract.RequestQuery>): Promise<GetAllCitiesContract.ResponseBody> {
-    const cities = await CityModel.findAll({
-      where: query,
-    });
-    return { cities };
+  async getNewCities({ query }: Request<GetAllCitiesContract.RequestQuery>) {
+    // const cities = await CityModel.findAll({
+    //   where: query,
+    // });
+    // return { cities };
   }
 
   async getCities(req: Request, res: Response, next: NextFunction): Promise<void> {
