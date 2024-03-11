@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Sequelize } from 'sequelize';
+import { Model, QueryOptions, QueryOptionsWithType, QueryTypes, Sequelize } from 'sequelize';
 import { IMysqlConfig } from '../configs/data';
 import { TYPES } from '../types';
 import { ILoggerService } from '../logger/data';
@@ -32,7 +32,7 @@ export class MysqldbService {
     await this.client.sync({ alter: true });
   }
 
-  getInstance(): Sequelize {
-    return this.client;
+  async query(string: string, options: QueryOptionsWithType<QueryTypes>) {
+    return this.client.query(string, options);
   }
 }
