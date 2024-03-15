@@ -3,6 +3,12 @@
 /node_modules
 /build
 
+
+# docker
+/docker/zookeeper
+/docker/kafka
+/docker/mysqldb
+
 # Logs
 logs
 *.log

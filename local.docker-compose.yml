@@ -1,0 +1,57 @@
+version: '3'
+services:
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+    command: npm run serve gateway
+    ports:
+      - 3000:3000
+    volumes:
+      - ./apps/gateway/src:/opt/app/apps/gateway/src
+      - ./libs:/opt/app/libs
+    restart: always
+    networks:
+      - kafkaTest
+  test:
+    container_name: test
+    build:
+      context: .
+      dockerfile: ./apps/test/Dockerfile
+    command: npm run serve test
+    ports:
+      - 3010:3010
+    volumes:
+      - ./apps/test/src:/opt/app/apps/test/src
+      - ./libs:/opt/app/libs
+    restart: always
+    networks:
+      - kafkaTest
+  zookeeper:
+    extends:
+      file: docker/kafka.docker-compose.yml
+      service: zookeeper
+    networks:
+      - kafkaTest
+  kafka:
+    extends:
+      file: docker/kafka.docker-compose.yml
+      service: kafka
+    networks:
+      - kafkaTest
+  mysqldb:
+    extends:
+      file: docker/mysqldb.docker-compose.yml
+      service: mysqldb
+    networks:
+      - kafkaTest
+  adminer:
+    extends:
+      file: docker/mysqldb.docker-compose.yml
+      service: adminer
+    networks:
+      - kafkaTest
+networks:
+  kafkaTest:
+    driver: bridge

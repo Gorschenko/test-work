@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "serve": "cross-env NODE_ENV=dev nest start --tsc --watch",
+    "serve": "nest start --tsc --watch",
     "format": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs}/**/*.{ts,js}\" --fix"
   },
