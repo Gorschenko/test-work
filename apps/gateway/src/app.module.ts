@@ -1,9 +1,10 @@
 import { DotenvParseOutput } from 'dotenv';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersController } from './users/users.controller';
 import { ConfigModule } from '@nestjs/config';
 import { validateEnvConfig } from '@app/configs';
 import { EnvConfigFactory } from './configs/envs/EnvConfigFactory';
+import { HttpLoggerMiddleware, LoggerModule } from '@app/services';
 
 const validate = (config: DotenvParseOutput) => {
   const envConfigFactory = new EnvConfigFactory();
@@ -18,8 +19,13 @@ const validate = (config: DotenvParseOutput) => {
       isGlobal: true,
       validate,
     }),
+    LoggerModule,
   ],
   controllers: [UsersController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(HttpLoggerMiddleware).forRoutes('*');
+  }
+}
