@@ -1,10 +1,10 @@
 import { DotenvParseOutput } from 'dotenv';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersController } from './users/users.controller';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
 import { validateEnvConfig } from '@app/configs';
 import { EnvConfigFactory } from './configs/envs/EnvConfigFactory';
-import { HttpLoggerMiddleware, LoggerModule } from '@app/services';
+import { HttpLoggerMiddleware, KafkaModule, KafkaService, LoggerModule } from '@app/services';
 
 const validate = (config: DotenvParseOutput) => {
   const envConfigFactory = new EnvConfigFactory();
@@ -12,12 +12,16 @@ const validate = (config: DotenvParseOutput) => {
   return validateEnvConfig(EnvConfig, config);
 };
 
+const getConfigModuleOptions = (): ConfigModuleOptions => ({
+  envFilePath: `envs/gateway/.${process.env.NODE_ENV}.env`,
+  isGlobal: true,
+  validate,
+});
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: `envs/gateway/.${process.env.NODE_ENV}.env`,
-      isGlobal: true,
-      validate,
+    ConfigModule.forRoot(getConfigModuleOptions()),
+    KafkaModule.register({
+      services: [KafkaService.USERS],
     }),
     LoggerModule,
   ],

@@ -19,18 +19,18 @@ services:
     restart: always
     networks:
       - kafkaTest
-  test:
-    container_name: test
+  users:
+    container_name: users
     image: node:20-alpine
     working_dir: /opt/app
     ports:
       - 3010:3010
-    command: npm run serve test
+    command: npm run serve users
     volumes:
       - ./package.json:/opt/app/package.json
       - ./tsconfig.json:/opt/app/tsconfig.json
       - ./node_modules:/opt/app/node_modules
-      - ./apps/test/src:/opt/app/src
+      - ./apps/users/src:/opt/app/src
       - ./libs:/opt/app/libs
       - ./envs:/opt/app/envs
     restart: always
