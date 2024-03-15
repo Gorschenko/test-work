@@ -17,11 +17,12 @@ const getConfigModuleOptions = (): ConfigModuleOptions => ({
   isGlobal: true,
   validate,
 });
+
 @Module({
   imports: [
     ConfigModule.forRoot(getConfigModuleOptions()),
     KafkaModule.register({
-      services: [KafkaService.USERS],
+      clients: [KafkaService.USERS],
     }),
     LoggerModule,
   ],

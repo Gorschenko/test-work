@@ -1,5 +1,4 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { ClientProviderOptions, ClientsModule } from '@nestjs/microservices';
 import { IKafkaConfig, KafkaService } from './data';
 import { KafkaClientsFactory } from './clients/KafkaClientsFactory';
@@ -7,11 +6,12 @@ import { KafkaClientsFactory } from './clients/KafkaClientsFactory';
 @Module({})
 export class KafkaModule {
   static register(config: IKafkaConfig): DynamicModule {
-    const clients = this.getClients(config.services);
+    const clients = this.getClients(config.clients);
 
     return {
       module: KafkaModule,
-      imports: [ConfigModule, ClientsModule.register(clients)],
+      imports: [ClientsModule.register(clients)],
+      exports: [ClientsModule],
     };
   }
 

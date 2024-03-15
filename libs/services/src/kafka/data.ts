@@ -3,11 +3,11 @@ export enum KafkaService {
 }
 
 export interface IKafkaClient {
-  name: string;
+  name: KafkaService;
   clientId: string;
   groupId: string;
 }
 
 export interface IKafkaConfig {
-  services: KafkaService[];
+  clients: KafkaService[];
 }

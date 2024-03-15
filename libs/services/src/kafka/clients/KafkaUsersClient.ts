@@ -3,7 +3,7 @@ import { KafkaService } from '../data';
 import { ConsumerConfig, KafkaConfig } from 'kafkajs';
 
 export class KafkaUsersClient {
-  public name: string;
+  public name: KafkaService;
   public transport: Transport.KAFKA;
   public options: {
     client: KafkaConfig;
