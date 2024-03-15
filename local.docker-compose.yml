@@ -4,9 +4,6 @@ services:
     container_name: gateway
     image: node:20-alpine
     working_dir: /opt/app
-    # build:
-    #   context: .
-    #   dockerfile: ./apps/gateway/local.Dockerfile
     ports:
       - 3000:3000
     command: npm run serve gateway
@@ -20,44 +17,47 @@ services:
     restart: always
     networks:
       - kafkaTest
-  # test:
-  #   container_name: test
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/test/Dockerfile
-  #   command: npm run serve test
-  #   ports:
-  #     - 3010:3010
-  #   volumes:
-  #     - ./apps/test/src:/opt/app/apps/test/src
-  #     - ./libs:/opt/app/libs
-  #   restart: always
-  #   networks:
-  #     - kafkaTest
-  # zookeeper:
-  #   extends:
-  #     file: docker/kafka.docker-compose.yml
-  #     service: zookeeper
-  #   networks:
-  #     - kafkaTest
-  # kafka:
-  #   extends:
-  #     file: docker/kafka.docker-compose.yml
-  #     service: kafka
-  #   networks:
-  #     - kafkaTest
-  # mysqldb:
-  #   extends:
-  #     file: docker/mysqldb.docker-compose.yml
-  #     service: mysqldb
-  #   networks:
-  #     - kafkaTest
-  # adminer:
-  #   extends:
-  #     file: docker/mysqldb.docker-compose.yml
-  #     service: adminer
-  #   networks:
-  #     - kafkaTest
+  test:
+    container_name: test
+    image: node:20-alpine
+    working_dir: /opt/app
+    ports:
+      - 3010:3010
+    command: npm run serve test
+    volumes:
+      - ./package.json:/opt/app/package.json
+      - ./tsconfig.json:/opt/app/tsconfig.json
+      - ./node_modules:/opt/app/node_modules
+      - ./apps/test/src:/opt/app/src
+      - ./libs:/opt/app/libs
+      - ./envs:/opt/app/envs
+    restart: always
+    networks:
+      - kafkaTest
+  zookeeper:
+    extends:
+      file: docker/kafka.docker-compose.yml
+      service: zookeeper
+    networks:
+      - kafkaTest
+  kafka:
+    extends:
+      file: docker/kafka.docker-compose.yml
+      service: kafka
+    networks:
+      - kafkaTest
+  mysqldb:
+    extends:
+      file: docker/mysqldb.docker-compose.yml
+      service: mysqldb
+    networks:
+      - kafkaTest
+  adminer:
+    extends:
+      file: docker/mysqldb.docker-compose.yml
+      service: adminer
+    networks:
+      - kafkaTest
 networks:
   kafkaTest:
     driver: bridge
