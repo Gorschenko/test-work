@@ -23,6 +23,24 @@
       ],
       "@app/types/*": [
         "libs/types/src/*"
+      ],
+      "@app/contracts": [
+        "libs/contracts/src"
+      ],
+      "@app/contracts/*": [
+        "libs/contracts/src/*"
+      ],
+      "@app/configs": [
+        "libs/configs/src"
+      ],
+      "@app/configs/*": [
+        "libs/configs/src/*"
+      ],
+      "@app/utils": [
+        "libs/utils/src"
+      ],
+      "@app/utils/*": [
+        "libs/utils/src/*"
       ]
     }
   },
@@ -31,6 +49,9 @@
     "watchDirectory": "dynamicPriorityPolling",
     "fallbackPolling": "dynamicPriority",
     "synchronousWatchDirectory": true,
-    "excludeDirectories": ["**/node_modules", "dist"],
-  },
+    "excludeDirectories": [
+      "**/node_modules",
+      "dist"
+    ]
+  }
 }
