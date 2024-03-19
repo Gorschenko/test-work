@@ -1,3 +1,4 @@
+export * from './kafka/services/KafkaServiceFactory';
 export * from './kafka/data';
 export * from './kafka/kafka.module';
 export * from './middlewares/HttpLoggerMiddleware';

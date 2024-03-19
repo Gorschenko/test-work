@@ -2,9 +2,16 @@ import { DotenvParseOutput } from 'dotenv';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersController } from './users/users.controller';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
-import { validateEnvConfig } from '@app/configs';
+import { getKafkaOptions, validateEnvConfig } from '@app/configs';
 import { EnvConfigFactory } from './configs/envs/EnvConfigFactory';
-import { HttpLoggerMiddleware, KafkaModule, KafkaService, LoggerModule } from '@app/services';
+import {
+  HttpLoggerMiddleware,
+  IKafkaService,
+  KafkaModule,
+  KafkaServiceName,
+  KafkaServicesFactory,
+  LoggerModule,
+} from '@app/services';
 
 const validate = (config: DotenvParseOutput) => {
   const envConfigFactory = new EnvConfigFactory();
@@ -18,12 +25,18 @@ const getConfigModuleOptions = (): ConfigModuleOptions => ({
   validate,
 });
 
+const getKafkaClients = (): IKafkaService[] => {
+  const factory = new KafkaServicesFactory();
+  const usersService = factory.create(KafkaServiceName.USERS);
+  usersService.setClientId('users');
+
+  return [usersService];
+};
+
 @Module({
   imports: [
     ConfigModule.forRoot(getConfigModuleOptions()),
-    KafkaModule.register({
-      clients: [KafkaService.USERS],
-    }),
+    KafkaModule.forRootAsync(getKafkaOptions(getKafkaClients())),
     LoggerModule,
   ],
   controllers: [UsersController],

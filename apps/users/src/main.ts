@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.KAFKA,
   });
-  await app.init();
+  await app.listen();
 }
 
 bootstrap();
