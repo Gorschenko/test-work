@@ -2,8 +2,7 @@ import { DotenvParseOutput } from 'dotenv';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersController } from './users/users.controller';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
-import { getKafkaOptions, validateEnvConfig } from '@app/configs';
-import { EnvConfigFactory } from './configs/envs/EnvConfigFactory';
+import { getKafkaOptions, valifateEnvConfig } from '@app/configs';
 import {
   HttpLoggerMiddleware,
   IKafkaService,
@@ -12,23 +11,17 @@ import {
   KafkaServicesFactory,
   LoggerModule,
 } from '@app/services';
-
-const validate = (config: DotenvParseOutput) => {
-  const envConfigFactory = new EnvConfigFactory();
-  const EnvConfig = envConfigFactory.create(process.env.NODE_ENV);
-  return validateEnvConfig(EnvConfig, config);
-};
+import { EnvConfigFactory } from './configs/envs/EnvConfigFactory';
 
 const getConfigModuleOptions = (): ConfigModuleOptions => ({
   envFilePath: `envs/gateway/.${process.env.NODE_ENV}.env`,
   isGlobal: true,
-  validate,
+  validate: (config: DotenvParseOutput) => valifateEnvConfig(EnvConfigFactory, config),
 });
 
 const getKafkaClients = (): IKafkaService[] => {
   const factory = new KafkaServicesFactory();
   const usersService = factory.create(KafkaServiceName.USERS);
-  usersService.setClientId('users');
 
   return [usersService];
 };

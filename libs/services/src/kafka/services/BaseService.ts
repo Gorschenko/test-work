@@ -1,21 +1,17 @@
 import { Transport } from '@nestjs/microservices';
 import { IKafkaService } from '../data';
 
+// Only for types
 export class BaseService implements IKafkaService {
   name: string;
   transport: Transport.KAFKA;
   options: {
-    client?: {
+    client: {
       brokers: string[];
-      clientId?: string;
+      clientId: string;
     };
-    consumer?: {
+    consumer: {
       groupId: string;
     };
   };
-
-  setClientId(id: string) {
-    this.options.client.clientId = id;
-    return this;
-  }
 }

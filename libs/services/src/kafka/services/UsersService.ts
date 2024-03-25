@@ -9,6 +9,7 @@ export class UsersService extends BaseService {
     this.transport = Transport.KAFKA;
     this.options = {
       client: {
+        clientId: 'users',
         brokers: [],
       },
       consumer: {
