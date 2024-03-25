@@ -2,16 +2,14 @@ import { IKafkaService } from '@app/services';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProvider, ClientsProviderAsyncOptions } from '@nestjs/microservices';
 
-export const getKafkaOptions = (clients: IKafkaService[]): ClientsProviderAsyncOptions[] => {
-  return clients.map((c) => ({
-    name: c.name,
-    imports: [ConfigModule],
-    inject: [ConfigService],
-    useFactory: async (configService: ConfigService) => setKafkaOptions(configService, c),
-  }));
-};
+export const getKafkaClientOptions = (client: IKafkaService): ClientsProviderAsyncOptions => ({
+  name: client.name,
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: async (configService: ConfigService) => setKafkaClientOptions(configService, client),
+});
 
-export const setKafkaOptions = (
+export const setKafkaClientOptions = (
   configService: ConfigService,
   client: IKafkaService,
 ): ClientProvider => {

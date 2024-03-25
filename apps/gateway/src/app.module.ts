@@ -2,16 +2,16 @@ import { DotenvParseOutput } from 'dotenv';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersController } from './users/users.controller';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
-import { getKafkaOptions, valifateEnvConfig } from '@app/configs';
+import { getKafkaClientOptions, valifateEnvConfig } from '@app/configs';
 import {
   HttpLoggerMiddleware,
-  IKafkaService,
   KafkaModule,
   KafkaServiceName,
   KafkaServicesFactory,
   LoggerModule,
 } from '@app/services';
 import { EnvConfigFactory } from './configs/envs/EnvConfigFactory';
+import { ClientsProviderAsyncOptions } from '@nestjs/microservices';
 
 const getConfigModuleOptions = (): ConfigModuleOptions => ({
   envFilePath: `envs/gateway/.${process.env.NODE_ENV}.env`,
@@ -19,17 +19,17 @@ const getConfigModuleOptions = (): ConfigModuleOptions => ({
   validate: (config: DotenvParseOutput) => valifateEnvConfig(EnvConfigFactory, config),
 });
 
-const getKafkaClients = (): IKafkaService[] => {
+const getKafkaModuleOptions = (): ClientsProviderAsyncOptions[] => {
   const factory = new KafkaServicesFactory();
   const usersService = factory.create(KafkaServiceName.USERS);
-
-  return [usersService];
+  const services = [usersService];
+  return services.map(getKafkaClientOptions);
 };
 
 @Module({
   imports: [
     ConfigModule.forRoot(getConfigModuleOptions()),
-    KafkaModule.forRootAsync(getKafkaOptions(getKafkaClients())),
+    KafkaModule.forRootAsync(getKafkaModuleOptions()),
     LoggerModule,
   ],
   controllers: [UsersController],

@@ -12,7 +12,7 @@ export class UsersController implements OnModuleInit {
   }
   @Get(GatewayGetAllUsersContract.path)
   getUsers() {
-    return this.client.send<unknown, UsersGetAllUsersContract.ResponseBody>(
+    return this.client.send<UsersGetAllUsersContract.ResponseBody, unknown>(
       UsersGetAllUsersContract.topic,
       '',
     );

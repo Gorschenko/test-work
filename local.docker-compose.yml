@@ -26,6 +26,8 @@ services:
     ports:
       - 3010:3010
     command: npm run serve users
+    environment:
+      - NODE_ENV=local
     volumes:
       - ./package.json:/opt/app/package.json
       - ./tsconfig.json:/opt/app/tsconfig.json
