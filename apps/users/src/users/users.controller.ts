@@ -7,8 +7,6 @@ export class UsersController {
   @MessagePattern(UsersGetAllUsersContract.topic)
   getUsers() {
     console.log('hello from users service');
-    return {
-      test: 'string',
-    };
+    return {};
   }
 }
