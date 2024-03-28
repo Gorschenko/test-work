@@ -5,7 +5,7 @@ import { MessagePattern } from '@nestjs/microservices';
 @Controller()
 export class UsersController {
   @MessagePattern(UsersGetAllUsersContract.topic)
-  hello() {
+  getUsers() {
     console.log('hello from users service');
     return {
       test: 'string',
