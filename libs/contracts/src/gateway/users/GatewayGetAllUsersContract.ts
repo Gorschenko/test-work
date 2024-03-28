@@ -1,4 +1,8 @@
-export class GatewayGetAllUsersResponseBody {}
+import { IUser } from '@app/types';
+
+export class GatewayGetAllUsersResponseBody {
+  users: IUser[];
+}
 
 export namespace GatewayGetAllUsersContract {
   export const path = '';

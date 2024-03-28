@@ -1,8 +1,9 @@
+import { IEnvFactory } from '@app/configs';
 import { DevEnvConfig } from './DevEnvConfig';
 import { LocalEnvConfig } from './LocalEnvConfig';
 import { ProdEnvConfig } from './ProdEnvConfig';
 
-export class EnvConfigFactory {
+export class EnvConfigFactory implements IEnvFactory {
   create(mode: string) {
     switch (mode) {
       case 'local':

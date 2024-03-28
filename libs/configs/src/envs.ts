@@ -6,7 +6,7 @@ export interface IEnvFactory {
   create: (mode: string) => Constructable;
 }
 
-export const valifateEnvConfig = (
+export const validateEnvConfig = (
   EnvFactoryClass: Constructable<IEnvFactory>,
   config: DotenvParseOutput,
 ) => {

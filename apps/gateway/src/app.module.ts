@@ -2,7 +2,7 @@ import { DotenvParseOutput } from 'dotenv';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersController } from './users/users.controller';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
-import { getKafkaClientOptions, valifateEnvConfig } from '@app/configs';
+import { getKafkaClientOptions, validateEnvConfig } from '@app/configs';
 import {
   HttpLoggerMiddleware,
   KafkaModule,
@@ -16,7 +16,7 @@ import { ClientsProviderAsyncOptions } from '@nestjs/microservices';
 const getConfigModuleOptions = (): ConfigModuleOptions => ({
   envFilePath: `envs/gateway/.${process.env.NODE_ENV}.env`,
   isGlobal: true,
-  validate: (config: DotenvParseOutput) => valifateEnvConfig(EnvConfigFactory, config),
+  validate: (config: DotenvParseOutput) => validateEnvConfig(EnvConfigFactory, config),
 });
 
 const getKafkaModuleOptions = (): ClientsProviderAsyncOptions[] => {
