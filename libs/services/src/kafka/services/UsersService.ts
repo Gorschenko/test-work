@@ -1,10 +1,20 @@
 import { Transport } from '@nestjs/microservices';
-import { KafkaServiceName } from '../data';
-import { BaseService } from './BaseService';
+import { IKafkaService, KafkaServiceName } from '../data';
 
-export class UsersService extends BaseService {
+export class UsersService implements IKafkaService {
+  name: string;
+  transport: Transport.KAFKA;
+  options: {
+    client: {
+      brokers: string[];
+      clientId: string;
+    };
+    consumer: {
+      groupId: string;
+    };
+  };
+
   constructor() {
-    super();
     this.name = KafkaServiceName.USERS;
     this.transport = Transport.KAFKA;
     this.options = {
