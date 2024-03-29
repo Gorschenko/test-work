@@ -10,9 +10,7 @@ services:
     restart: always
   redisinsight:
     container_name: redisinsight
-    image: redislabs/redisinsight:latest
+    image: oblakstudio/redisinsight:latest
     ports:
-      - 8081:8081
-    volumes:
-      - ./redisinsight:/db
+      - 5540:5540
     restart: always

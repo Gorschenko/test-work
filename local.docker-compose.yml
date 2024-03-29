@@ -17,6 +17,8 @@ services:
       - ./libs:/opt/app/libs
       - ./envs:/opt/app/envs
     restart: always
+    depends_on:
+      - kafka
     networks:
       - kafkaTest
   users:
@@ -36,6 +38,8 @@ services:
       - ./libs:/opt/app/libs
       - ./envs:/opt/app/envs
     restart: always
+    depends_on:
+      - kafka
     networks:
       - kafkaTest
   zookeeper:
