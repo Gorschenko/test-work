@@ -62,6 +62,12 @@ services:
       service: adminer
     networks:
       - kafkaTest
+  redis:
+    extends:
+      file: docker/redis.docker-compose.yml
+      service: redis
+    networks:
+      - kafkaTest
 networks:
   kafkaTest:
     driver: bridge
