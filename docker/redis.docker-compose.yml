@@ -8,3 +8,11 @@ services:
     volumes:
       - ./redis:/data
     restart: always
+  redisinsight:
+    container_name: redisinsight
+    image: redislabs/redisinsight:latest
+    ports:
+      - 8081:8081
+    volumes:
+      - ./redisinsight:/db
+    restart: always

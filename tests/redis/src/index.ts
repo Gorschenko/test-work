@@ -20,8 +20,12 @@ const connectToRedis = async (): Promise<RedisClient> => {
   return client;
 };
 
-const sendMessage = (client: RedisClient) => {
-  client.publish(RedisChannel.FIRST, JSON.stringify({ test: '123' }));
+const publishMessage = (client: RedisClient) => {
+  client.publish(RedisChannel.FIRST + '123', JSON.stringify({ test: '123' }));
+};
+
+const sendError = (client: RedisClient) => {
+  client.emit('error', new Error('Это созданная ошибка'));
 };
 
 const bootstrap = async () => {
@@ -34,7 +38,10 @@ const bootstrap = async () => {
     console.log('Получено сообщение из канала ' + RedisChannel.FIRST + ': ' + message);
   });
   const publisher = await connectToRedis();
-  setInterval(() => sendMessage(publisher), 2000);
+  setInterval(() => {
+    publishMessage(publisher);
+    sendError(publisher);
+  }, 2000);
 };
 
 bootstrap();

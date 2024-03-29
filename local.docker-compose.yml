@@ -68,6 +68,12 @@ services:
       service: redis
     networks:
       - kafkaTest
+  redisinsight:
+    extends:
+      file: docker/redis.docker-compose.yml
+      service: redisinsight
+    networks:
+      - kafkaTest
 networks:
   kafkaTest:
     driver: bridge
