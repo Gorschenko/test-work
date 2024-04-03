@@ -16,5 +16,6 @@ const getSequelizeOptions = (configService: ConfigService): SequelizeModuleOptio
   username: configService.get('MYSQL_USERNAME') || '',
   password: configService.get('MYSQL_PASSWORD') || '',
   database: configService.get('MYSQL_DATABASE') || '',
+  repositoryMode: true,
   autoLoadModels: true,
 });

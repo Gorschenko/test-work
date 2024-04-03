@@ -1,7 +1,7 @@
 import { DotenvParseOutput } from 'dotenv';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
-import { validateEnvConfig } from '@app/configs';
+import { getSequelizeConfig, validateEnvConfig } from '@app/configs';
 import { EnvConfigFactory } from './configs/envs/EnvConfigFactory';
 import { UsersModule } from './users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -13,7 +13,11 @@ const getConfigModuleOptions = (): ConfigModuleOptions => ({
 });
 
 @Module({
-  imports: [ConfigModule.forRoot(getConfigModuleOptions()), SequelizeModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot(getConfigModuleOptions()),
+    SequelizeModule.forRootAsync(getSequelizeConfig()),
+    UsersModule,
+  ],
   controllers: [],
   providers: [],
 })

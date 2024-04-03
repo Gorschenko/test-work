@@ -3,7 +3,12 @@ import { AllowNull, Column, DataType, Model, Table, Unique } from 'sequelize-typ
 import { ModelName } from '../data';
 
 @Table({ modelName: ModelName.USERS })
-export class UserModel extends Model<IUser> {
+export class UserModel extends Model implements Omit<IUser, 'id' | 'createdAt' | 'updatedAt'> {
+  // @PrimaryKey
+  // @AutoIncrement
+  // @Column(DataType.NUMBER)
+  // id: number;
+
   @AllowNull(false)
   @Column(DataType.STRING)
   firstName: string;
@@ -20,4 +25,14 @@ export class UserModel extends Model<IUser> {
   @AllowNull(false)
   @Column(DataType.ENUM(...Object.values(UserStatus)))
   status: UserStatus;
+
+  // @CreatedAt
+  // @AllowNull(false)
+  // @Default(Date.now())
+  // createdAt: Date;
+
+  // @UpdatedAt
+  // @AllowNull(false)
+  // @Default(Date.now())
+  // updatedAt: Date;
 }
