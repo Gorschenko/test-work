@@ -1,5 +1,5 @@
 import { UserStatus } from '@app/types';
-import { IsString, IsEmail, IsEnum } from 'class-validator';
+import { IsString, IsEmail, IsEnum, IsOptional } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -11,6 +11,7 @@ export class CreateUserDto {
   @IsEmail({})
   email: string;
 
+  @IsOptional()
   @IsEnum(UserStatus)
-  status: UserStatus;
+  status?: UserStatus;
 }

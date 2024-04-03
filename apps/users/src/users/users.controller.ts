@@ -1,6 +1,6 @@
-import { UsersGetAllUsersContract } from '@app/contracts';
+import { UsersCreateUserContract, UsersGetAllUsersContract } from '@app/contracts';
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UsersService } from './users.service';
 
 @Controller()
@@ -11,5 +11,16 @@ export class UsersController {
   getUsers() {
     console.log('hello from users service');
     return {};
+  }
+
+  @MessagePattern(UsersCreateUserContract.topic)
+  async createUser(
+    @Payload() data: UsersCreateUserContract.RequestBody,
+  ): Promise<UsersCreateUserContract.ResponseBody> {
+    const user = await this.usersService.createUser(data);
+
+    return {
+      user,
+    };
   }
 }

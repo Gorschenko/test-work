@@ -8,6 +8,7 @@ import {
 import { KafkaServiceName } from '@app/services';
 import { Body, Controller, Get, Inject, OnModuleInit, Post } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Controller(ROUTES.USERS)
 export class UsersController implements OnModuleInit {
@@ -20,18 +21,28 @@ export class UsersController implements OnModuleInit {
   }
 
   @Get(GatewayGetAllUsersContract.path)
-  getUsers() {
-    return this.client.send<UsersGetAllUsersContract.ResponseBody, unknown>(
-      UsersGetAllUsersContract.topic,
-      {},
+  async getUsers(): Promise<GatewayGetAllUsersContract.ResponseBody> {
+    const { users } = await lastValueFrom(
+      this.client.send<UsersGetAllUsersContract.ResponseBody, unknown>(
+        UsersGetAllUsersContract.topic,
+        {},
+      ),
     );
+    return {
+      users,
+    };
   }
 
   @Post(GatewayCreateUserContract.path)
-  createUser(@Body() body: GatewayCreateUserContract.RequestBody) {
-    return this.client.send<
-      UsersCreateUserContract.ResponseBody,
-      UsersCreateUserContract.RequestBody
-    >(UsersCreateUserContract.topic, body);
+  async createUser(
+    @Body() body: GatewayCreateUserContract.RequestBody,
+  ): Promise<GatewayCreateUserContract.ResponseBody> {
+    const { user } = await lastValueFrom(
+      this.client.send<UsersCreateUserContract.ResponseBody, UsersCreateUserContract.RequestBody>(
+        UsersCreateUserContract.topic,
+        body,
+      ),
+    );
+    return { user };
   }
 }
