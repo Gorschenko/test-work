@@ -5,9 +5,11 @@ import {
   UsersGetAllUsersContract,
   UsersCreateUserContract,
 } from '@app/contracts';
-import { KafkaServiceName } from '@app/services';
+import { HttpError, KafkaServiceName, IKafkaErrorOptions } from '@app/services';
+import { KafkaError } from '@app/services/filters/errors/KafkaError';
 import { Body, Controller, Get, Inject, OnModuleInit, Post } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import { ClientKafka, RpcException } from '@nestjs/microservices';
+
 import { lastValueFrom } from 'rxjs';
 
 @Controller(ROUTES.USERS)
@@ -37,12 +39,16 @@ export class UsersController implements OnModuleInit {
   async createUser(
     @Body() body: GatewayCreateUserContract.RequestBody,
   ): Promise<GatewayCreateUserContract.ResponseBody> {
-    const { user } = await lastValueFrom(
-      this.client.send<UsersCreateUserContract.ResponseBody, UsersCreateUserContract.RequestBody>(
-        UsersCreateUserContract.topic,
-        body,
-      ),
-    );
-    return { user };
+    try {
+      const { user } = await lastValueFrom(
+        this.client.send<UsersCreateUserContract.ResponseBody, UsersCreateUserContract.RequestBody>(
+          UsersCreateUserContract.topic,
+          body,
+        ),
+      );
+      return { user };
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

@@ -1,6 +1,8 @@
 export * from './filters/errors/HttpError';
+export * from './filters/errors/KafkaError';
 export * from './filters/DefaultExceptionFilter';
 export * from './filters/HttpExceptionFilter';
+export * from './filters/KafkaExceptionFilter';
 export * from './filters/validationOptions';
 export * from './filters/errorsStrings';
 

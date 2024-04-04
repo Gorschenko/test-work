@@ -10,6 +10,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const usersService = factory.create(KafkaServiceName.USERS);
   app.connectMicroservice(setKafkaClientOptions(configService, usersService));
+
   await app.startAllMicroservices();
   await app.init();
 }

@@ -1,17 +1,16 @@
-import { ErrorCode, Http } from '@app/types';
+import { ErrorCode } from '@app/types';
+import { HttpStatus } from '@nestjs/common';
 
 export class HttpError {
-  status: Http.Status;
-  code?: ErrorCode;
+  status: HttpStatus;
+  code: ErrorCode;
   message?: string;
   path?: string;
   stack?: string;
 
-  constructor({ status = Http.Status.BAD_REQUEST, code, message, path, stack }: HttpError) {
-    this.status = status;
-    this.code = code;
-    this.message = message;
-    this.path = path;
-    this.stack = stack;
+  constructor(e: HttpError) {
+    this.status = e.status;
+    this.code = e.code;
+    this.message = e.message;
   }
 }
