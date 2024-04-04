@@ -78,6 +78,12 @@ services:
       service: redisinsight
     networks:
       - kafkaTest
+  mosquitto:
+    extends:
+      file: docker/mosquitto.docker-compose.yml
+      service: mosquitto
+    networks:
+      - kafkaTest
 networks:
   kafkaTest:
     driver: bridge

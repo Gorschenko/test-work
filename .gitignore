@@ -4,7 +4,11 @@ node_modules
 build
 
 # docker data
-/docker/*
+docker/kafka
+docker/mysqldb
+docker/redis
+docker/redisinsight
+docker/zookeeper
 
 # dotenv environment variable files
 
