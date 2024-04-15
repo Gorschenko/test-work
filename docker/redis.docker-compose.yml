@@ -13,4 +13,6 @@ services:
     image: oblakstudio/redisinsight:latest
     ports:
       - 5540:5540
+    volumes:
+      - ./redis-insight:/data
     restart: always
