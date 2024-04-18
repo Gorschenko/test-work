@@ -1,43 +1,81 @@
-import { generateUniqueString } from '@app/utils';
-import { LoggerService } from './../logger.module';
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { LoggerService } from '@app/services';
+import { NestMiddleware } from '@nestjs/common';
+import { NextFunction, Request, Response } from 'express';
 
-interface IMessageOptions {
-  processingTime: number;
-  requestId: string;
+// TO DO
+// Переделать под Логгер
+
+interface IRequestMessageOptions {
+  method: string;
+  url: string;
+  status: number;
+  ip: string;
+  time: number;
+  requestHeaders: string;
+  requestBody: string;
+  responseBody: string;
 }
 
-@Injectable()
 export class HttpLoggerMiddleware implements NestMiddleware {
   constructor(private readonly loggerService: LoggerService) {}
 
   use(req: Request, res: Response, next: NextFunction): void {
-    const requestId = generateUniqueString();
-    const requestStart = Date.now();
+    const requestTimeStart = Date.now();
+    const oldWrite = res.write;
+    const oldEnd = res.end;
+    const chunks: Buffer[] = [];
+    let responseBody: string;
 
+    // Получение responseBody
+    res.write = (...args: any[]) => {
+      chunks.push(Buffer.from(args[0]));
+      return oldWrite.apply(res, args);
+    };
+
+    res.end = (...args: any[]) => {
+      if (args[0]) {
+        chunks.push(Buffer.from(args[0]));
+      }
+      responseBody = Buffer.concat(chunks).toString('utf8');
+      return oldEnd.apply(res, args);
+    };
+
+    // Формирование сообщения для лога
     res.on('close', () => {
-      const processingTime = Date.now() - requestStart;
-      const options = {
-        processingTime,
-        requestId,
+      const requestTime = Date.now() - requestTimeStart;
+      const { method, originalUrl, ip, headers, body } = req;
+      const { statusCode } = res;
+
+      const requestMessageOptions = {
+        method,
+        url: originalUrl,
+        status: statusCode,
+        ip,
+        time: requestTime,
+        requestHeaders: JSON.stringify(headers),
+        requestBody: JSON.stringify(body),
+        responseBody,
       };
-      this.loggerService.log(this.getMessage(req, res, options));
+
+      const message = this.getRequestMessage(requestMessageOptions);
+      this.loggerService.log(message);
     });
 
     next();
   }
 
-  getMessage(req: Request, res: Response, options: IMessageOptions) {
-    const { method, originalUrl, ip, query, headers, body } = req;
-    const { processingTime, requestId } = options;
-    const { statusCode } = res;
-
+  getRequestMessage(o: IRequestMessageOptions): string {
     return `
-      METHOD: ${method} URL: ${originalUrl} STATUS: ${statusCode} IP: ${ip} TIME: ${processingTime} ms ID: ${requestId}
-      REQUEST QUERY: ${JSON.stringify(query)}
-      REQUEST HEADERS: ${JSON.stringify(headers)}
-      REQUEST BODY: ${JSON.stringify(body)}
+      REQUEST:
+        METHOD: ${o.method}
+        URL: ${o.url}
+        IP: ${o.ip}
+        HEADERS: ${o.requestHeaders}
+        BODY: ${o.requestBody}
+      RESPONSE:
+        STATUS: ${o.status}
+        TIME: ${o.time} ms
+        BODY: ${o.responseBody}
       `;
   }
 }

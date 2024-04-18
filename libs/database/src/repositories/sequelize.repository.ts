@@ -29,7 +29,7 @@ export class SequelizeRepository<T extends Model<T>> {
   }
 
   async findAndUpdate(attributes: Partial<T>, options: UpdateOptions<T>) {
-    return this.model.update<T>(attributes, { ...options, returning: true });
+    return this.model.update<T>(attributes, options);
   }
 
   async findAndDelete(options: DestroyOptions<T> = {}) {
