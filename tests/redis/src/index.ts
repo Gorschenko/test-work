@@ -4,6 +4,7 @@ import { REDIS_URL, RedisChannel } from './static';
 
 const connectToRedis = async (): Promise<RedisClient> => {
   const client = createClient({ url: REDIS_URL });
+  client.hSet('myhash', 'field1', 'value1', redis.print);
   client.on('connect', () => {
     console.log('Успешно подключились к Redis');
   });
