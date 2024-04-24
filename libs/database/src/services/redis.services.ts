@@ -1,4 +1,4 @@
-import { RedisClientOptions, createClient } from 'redis';
+import { RedisClientOptions, createClient, RedisClientType } from 'redis';
 // TO DO
 // Переписать на LoggerService
 // TO DO
@@ -6,7 +6,7 @@ import { RedisClientOptions, createClient } from 'redis';
 // TO DO
 // Подумать о создании Репозитория для взаимодействия с какой-либо сущностью, например, Devices
 export class RedisService {
-  private client: any;
+  private client: RedisClientType;
 
   public connect(options: RedisClientOptions) {
     this.client = createClient(options);
