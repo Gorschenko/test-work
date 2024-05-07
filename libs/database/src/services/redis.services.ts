@@ -13,7 +13,7 @@ export class RedisService {
     console.log('[RedisService] Успешно подключились к БД');
   }
 
-  public async hget(hash: string, field: string): Promise<string> {
+  public async hget(hash: string, field: string): Promise<string | null> {
     return new Promise((resolve, reject) => {
       this.client.hget(hash, field, (err, res: string) => (err ? reject(err) : resolve(res)));
     });
