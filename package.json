@@ -5,7 +5,8 @@
   "scripts": {
     "build": "nest build",
     "serve": "nest start --tsc --watch",
-    "serve:tests-redis": "nodemon --watch ./tests/redis/src --ext ts,js --exec ts-node --files ./tests/redis/src/index.ts",
+    "serve:redis": "nodemon --watch ./tests/redis/src --ext ts,js --exec ts-node --files ./tests/redis/src/index.ts",
+    "serve:mqtt": "nodemon --watch ./tests/redis/src --ext ts,js --exec ts-node --files ./tests/mqtt/src/index.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs}/**/*.{ts,js}\" --fix"
   },
@@ -19,6 +20,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "kafkajs": "^2.2.4",
+    "mqtt": "^5.7.0",
     "mysql2": "^3.9.3",
     "redis": "^4.6.13",
     "reflect-metadata": "^0.2.0",
