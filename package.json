@@ -6,7 +6,8 @@
     "build": "nest build",
     "serve": "nest start --tsc --watch",
     "serve:redis": "nodemon --watch ./tests/redis/src --ext ts,js --exec ts-node --files ./tests/redis/src/index.ts",
-    "serve:mqtt": "nodemon --watch ./tests/mqtt/src --ext ts,js --exec ts-node --files ./tests/mqtt/src/index.ts",
+    "serve:sub": "nodemon --watch ./tests/mqtt/src --ext ts,js --exec ts-node --files ./tests/mqtt/src/subscriber.ts",
+    "serve:pub": "nodemon --watch ./tests/mqtt/src --ext ts,js --exec ts-node --files ./tests/mqtt/src/publisher.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs}/**/*.{ts,js}\" --fix"
   },
