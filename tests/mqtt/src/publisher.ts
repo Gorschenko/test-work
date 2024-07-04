@@ -1,5 +1,5 @@
-import { mqttPublisherOptions } from './helpers';
-import { Url } from './types';
+import { mqttPublisherOptions } from './services/helpers';
+import { Url } from './services/types';
 import { MqttDevicePublisher } from './services/MqttDevicePublisher';
 
 const bootstrap = () => {

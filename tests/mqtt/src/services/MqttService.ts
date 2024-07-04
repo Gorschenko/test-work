@@ -1,5 +1,5 @@
 import { IClientOptions, MqttClient, connect } from 'mqtt';
-import { Topic } from '../types';
+import { Topic } from './types';
 
 export class MqttService {
   protected client: MqttClient;

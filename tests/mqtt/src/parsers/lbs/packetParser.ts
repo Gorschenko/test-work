@@ -9,7 +9,7 @@ import {
   TOWERS_COUNT_LENGTH,
 } from './static';
 
-const parseCommonPacketData = (packet) => {
+const parseCommonPacketData = (packet: Buffer) => {
   let offset = 0;
   const time = packet.readUInt32LE(offset);
   offset += TIME_LENGTH;
@@ -25,7 +25,7 @@ const parseCommonPacketData = (packet) => {
   };
 };
 
-const parseBinaryTowerToObj = (tower) => {
+const parseBinaryTowerToObj = (tower: Buffer) => {
   let offset = 0;
   const mobileCountryCode = tower.readUInt16LE(offset);
   offset += MCC_LENGTH;
@@ -43,7 +43,7 @@ const parseBinaryTowerToObj = (tower) => {
   };
 };
 
-const parseTowers = (packet) => {
+const parseTowers = (packet: Buffer) => {
   // Отсекаем общие данные и работаем с массивом вышек
   const towers = packet.slice(COMMON_DATA_LENGTH, packet.length);
   const towersCount = towers.length / SINGLE_TOWER_DATA_LENGTH;
@@ -57,7 +57,7 @@ const parseTowers = (packet) => {
   return result;
 };
 
-const validateLbsPacket = (packet) => {
+const validateLbsPacket = (packet: Buffer) => {
   console.log('validate of packet started: ', packet);
   const towersDataOffset = 0 + TIME_LENGTH + CODE_LENGTH + TOWERS_COUNT_LENGTH;
   const towers = packet.slice(towersDataOffset, packet.length);
@@ -68,7 +68,7 @@ const validateLbsPacket = (packet) => {
   console.log('validate of packet finished: ', true);
 };
 
-const parseLbsPacket = (packet) => {
+const parseLbsPacket = (packet: Buffer) => {
   console.log('parse of lbs packet started: ', packet);
   const commonData = parseCommonPacketData(packet);
   const towers = parseTowers(packet);
@@ -80,7 +80,7 @@ const parseLbsPacket = (packet) => {
   return result;
 };
 
-export const parsePacket = (packet) => {
+export const parsePacket = (packet: Buffer) => {
   const commandOffset = 0 + TIME_LENGTH;
   const commandCode = packet.readUInt8(commandOffset);
   if (commandCode === 0x01) {

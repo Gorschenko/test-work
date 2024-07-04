@@ -7,8 +7,9 @@ import {
   SINGLE_TOWER_DATA_LENGTH,
   TIME_LENGTH,
 } from './static';
+import { ITower } from './types';
 
-const transformTowerObjToBinary = (tower) => {
+const transformTowerObjToBinary = (tower: ITower) => {
   const result = Buffer.alloc(SINGLE_TOWER_DATA_LENGTH);
   let offset = 0;
   result.writeUInt16LE(tower.mobileCountryCode, offset);
@@ -22,7 +23,7 @@ const transformTowerObjToBinary = (tower) => {
   return result;
 };
 
-const createCommonPacketData = (towers) => {
+const createCommonPacketData = (towers: ITower[]) => {
   const result = Buffer.alloc(COMMON_DATA_LENGTH);
 
   let offset = 0;
@@ -35,7 +36,7 @@ const createCommonPacketData = (towers) => {
   return result;
 };
 
-export const createPacket = (towers) => {
+export const createPacket = (towers: ITower[]) => {
   console.log('create packet is started', towers);
   const packetLength = COMMON_DATA_LENGTH + towers.length * SINGLE_TOWER_DATA_LENGTH;
   const packetCommonData = createCommonPacketData(towers);
