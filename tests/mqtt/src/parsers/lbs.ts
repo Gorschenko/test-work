@@ -43,17 +43,21 @@ const transformTowerObjToBinary = (tower) => {
 };
 
 const parseBinaryTowerToObj = (tower) => {
-  const result = {};
   let offset = 0;
-  result.mobileCountryCode = tower.readUInt16LE(offset);
+  const mobileCountryCode = tower.readUInt16LE(offset);
   offset += MCC_LENGTH;
-  result.mobileNetworkCode = tower.readUInt16LE(offset);
+  const mobileNetworkCode = tower.readUInt16LE(offset);
   offset += MNC_LENGTH;
-  result.locationAreaCode = tower.readUInt16LE(offset);
+  const locationAreaCode = tower.readUInt16LE(offset);
   offset += LAC_LENGTH;
-  result.cellId = tower.readUInt32LE(offset);
+  const cellId = tower.readUInt32LE(offset);
 
-  return result;
+  return {
+    mobileCountryCode,
+    mobileNetworkCode,
+    locationAreaCode,
+    cellId,
+  };
 };
 
 // SIMPLE FUNCTIONS IS FINISHED
