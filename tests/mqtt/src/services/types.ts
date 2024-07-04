@@ -7,6 +7,7 @@ export enum Topic {
 }
 
 export enum Url {
+  LOCAL = 'localhost',
   DEV_RU_BASE = 'test.atlas-gsm.ru',
   DEV_EU_BASE = 'test79.atlas-gsm.ru',
 }

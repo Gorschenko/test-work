@@ -13,7 +13,7 @@ export class MqttDevicePublisher extends MqttService {
     this.topicPrefix = prefix;
   }
 
-  public async publish(topic: string, message: object | string) {
+  public async publish(topic: string, message: string | Buffer) {
     topic = this.topicPrefix + '/' + topic;
     return super.publish(topic, message);
   }

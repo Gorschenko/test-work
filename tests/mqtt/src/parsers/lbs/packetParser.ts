@@ -57,26 +57,26 @@ const parseTowers = (packet: Buffer) => {
   return result;
 };
 
-const validateLbsPacket = (packet: Buffer) => {
-  console.log('validate of packet started: ', packet);
+export const validateLbsPacket = (packet: Buffer) => {
+  console.log('validate of packet started');
   const towersDataOffset = 0 + TIME_LENGTH + CODE_LENGTH + TOWERS_COUNT_LENGTH;
   const towers = packet.slice(towersDataOffset, packet.length);
   const isValid = towers.length % SINGLE_TOWER_DATA_LENGTH === 0;
   if (!isValid) {
     throw Error('Lbs packet is not valid');
   }
-  console.log('validate of packet finished: ', true);
+  console.log('validate of packet finished');
 };
 
 const parseLbsPacket = (packet: Buffer) => {
-  console.log('parse of lbs packet started: ', packet);
+  console.log('parse of lbs packet started');
   const commonData = parseCommonPacketData(packet);
   const towers = parseTowers(packet);
   const result = {
     ...commonData,
     towers,
   };
-  console.log('parse of lbs packet finished: ', result);
+  console.log('parse of lbs packet finished. Towers length: ', result.towers.length);
   return result;
 };
 

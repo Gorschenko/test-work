@@ -1,3 +1,4 @@
+import { validateLbsPacket } from './packetParser';
 import {
   CODE_LENGTH,
   COMMON_DATA_LENGTH,
@@ -37,13 +38,14 @@ const createCommonPacketData = (towers: ITower[]) => {
 };
 
 export const createPacket = (towers: ITower[]) => {
-  console.log('create packet is started', towers);
+  console.log('create packet is started. Towers length:', towers.length);
   const packetLength = COMMON_DATA_LENGTH + towers.length * SINGLE_TOWER_DATA_LENGTH;
   const packetCommonData = createCommonPacketData(towers);
   const towersToBinary = towers.map(transformTowerObjToBinary);
 
   const combinedBuffer = Buffer.concat([packetCommonData, ...towersToBinary]);
-  const result = Buffer.alloc(packetLength, combinedBuffer);
-  console.log('create packet is finished', result);
-  return result;
+  const packet = Buffer.alloc(packetLength, combinedBuffer);
+  validateLbsPacket(packet);
+  console.log('create packet is finished');
+  return packet;
 };

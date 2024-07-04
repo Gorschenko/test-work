@@ -37,10 +37,9 @@ export class MqttService {
     await Promise.all(Object.values(Topic).map(this.subscribe.bind(this)));
   }
 
-  public async publish(topic: string, message: object | string) {
-    if (typeof message === 'object') {
-      message = JSON.stringify(message);
-    }
-    return this.client.publishAsync(topic, message);
+  public async publish(topic: string, message: string | Buffer) {
+    const packet = await this.client.publishAsync(topic, message);
+    console.log(`Сообщение отправлено в топик ${topic}`);
+    return packet;
   }
 }
