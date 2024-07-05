@@ -2,6 +2,8 @@ export enum Topic {
   EVENTS = 'e',
   STATUSES = 's',
   NAVIGATION = 'n',
+  IN = 'i',
+  OUT = 'o',
   REQUESTS = 'r',
   ANSWERS = 'a',
 }
