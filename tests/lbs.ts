@@ -47,27 +47,28 @@ const getTime = () => {
   return Math.round(difToMs);
 };
 
-const getTransformedCoordinate = (coordinate: number) => {
-  return Math.round(coordinate * Math.pow(10, 7));
+const increaseNumberByExponent = (number: number, exponent: number) => {
+  return Math.round(number * Math.pow(10, exponent));
 };
 
 export const serialize = (data: IGeolocateData): Buffer => {
   const buffer = Buffer.alloc(PACKET_DATA);
+  const code = 0x01;
   const time = getTime();
   const course = 0x00;
   const speed = 0x00;
   const mode = 0x11;
-  const tansformedLatitude = getTransformedCoordinate(data.location.lat);
-  const tansformedLongitude = getTransformedCoordinate(data.location.lng);
+  const latitude = increaseNumberByExponent(data.location.lat, 7);
+  const longitude = increaseNumberByExponent(data.location.lng, 7);
 
   let offset = 0;
-  buffer.writeInt8(0x01, offset);
+  buffer.writeInt8(code, offset);
   offset += CODE_LENGTH;
   buffer.writeUInt32LE(time, offset);
   offset += TIME_LENGTH;
-  buffer.writeInt32LE(tansformedLatitude, offset);
+  buffer.writeInt32LE(latitude, offset);
   offset += LATITUDE_LENGTH;
-  buffer.writeInt32LE(tansformedLongitude, offset);
+  buffer.writeInt32LE(longitude, offset);
   offset += LONGITUDE_LENGTH;
   buffer.writeUInt16LE(course, offset);
   offset += COURSE_LENGTH;

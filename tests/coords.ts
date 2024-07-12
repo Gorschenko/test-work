@@ -11,16 +11,15 @@ export interface IParsedCoord {
   pmode: number;
 }
 
-export const parse = (coordsData: number[]): IParsedCoord => {
-  console.log('Coords data: ', coordsData, 'length: ', coordsData.length);
-  const coordsBuf = Buffer.from(coordsData);
-
-  const ptime = coordsBuf.readUInt32LE(0);
-  const plat = coordsBuf.readInt32LE(4);
-  const plon = coordsBuf.readInt32LE(8);
-  const pcourse = coordsBuf.readUInt16LE(12);
-  const pspeed = coordsBuf.readUInt16LE(14);
-  const pmode = coordsBuf.readUInt8(16);
+export const parse = (data: number[] | Buffer): IParsedCoord => {
+  console.log('Coords data: ', data, 'length: ', data.length);
+  const coordBuffer = Array.isArray(data) ? Buffer.from(data) : data;
+  const ptime = coordBuffer.readUInt32LE(0);
+  const plat = coordBuffer.readInt32LE(4);
+  const plon = coordBuffer.readInt32LE(8);
+  const pcourse = coordBuffer.readUInt16LE(12);
+  const pspeed = coordBuffer.readUInt16LE(14);
+  const pmode = coordBuffer.readUInt8(16);
 
   return {
     ptime,
