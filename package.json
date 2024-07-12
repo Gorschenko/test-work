@@ -8,7 +8,7 @@
     "serve:redis": "nodemon --files ./tests/redis/src/index.ts",
     "serve:sub": "nodemon --files ./tests/mqtt/src/subscriber.ts",
     "serve:pub": "nodemon --files ./tests/mqtt/src/publisher.ts",
-    "serve:test": "nodemon --files ./tests/test.ts", 
+    "serve:time": "nodemon --files ./tests/time.ts", 
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs}/**/*.{ts,js}\" --fix"
   },

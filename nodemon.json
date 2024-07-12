@@ -5,8 +5,7 @@
     "ignore": [
       "dist",
       "node_modules",
-      "docker",
-      "tests"
+      "docker"
     ]
   }
   
