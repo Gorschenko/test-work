@@ -1,0 +1,12 @@
+{
+    "watch": ["./tests"],
+    "ext": "ts,js",
+    "exec": "ts-node",
+    "ignore": [
+      "dist",
+      "node_modules",
+      "docker",
+      "tests"
+    ]
+  }
+  
