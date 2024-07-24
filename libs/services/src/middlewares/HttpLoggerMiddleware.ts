@@ -36,7 +36,7 @@ export class HttpLoggerMiddleware implements NestMiddleware {
       if (args[0]) {
         chunks.push(Buffer.from(args[0]));
       }
-      responseBody = Buffer.concat(chunks).toString('utf8');
+      responseBody = JSON.parse(Buffer.concat(chunks).toString('utf8'));
       return oldEnd.apply(res, args);
     };
 

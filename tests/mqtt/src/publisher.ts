@@ -6,7 +6,7 @@ import { createPacket } from './parsers/lbs/createPacket';
 import { ITower } from './parsers/lbs/types';
 
 const bootstrap = () => {
-  const publisher = new MqttDevicePublisher(Url.DEV_RU_BASE, mqttPublisherOptions);
+  const publisher = new MqttDevicePublisher(Url.LOCAL, mqttPublisherOptions);
   setInterval(async () => {
     // const towers = createTowersArray();
 
