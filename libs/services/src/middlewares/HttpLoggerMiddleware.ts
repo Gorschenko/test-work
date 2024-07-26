@@ -1,4 +1,5 @@
 import { LoggerService } from '@app/services';
+import { isJson } from '@app/utils';
 import { NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
@@ -37,6 +38,8 @@ export class HttpLoggerMiddleware implements NestMiddleware {
         chunks.push(Buffer.from(args[0]));
       }
       responseBody = Buffer.concat(chunks).toString('utf8');
+      responseBody = Buffer.concat(chunks).toString('utf8');
+      responseBody = isJson(responseBody) ? JSON.parse(responseBody) : responseBody;
       return oldEnd.apply(res, args);
     };
 
