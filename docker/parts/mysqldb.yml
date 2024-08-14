@@ -1,0 +1,20 @@
+services:
+  mysqldb:
+    image: mysql:latest
+    ports:
+      - ${MYSQLDB_PORT}:3306
+    volumes:
+      - ${MYSQLDB_HOST_VOLUMES_PATH}:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: atlas
+    restart: always
+  adminer:
+    image: adminer:latest
+    profiles:
+      - ui
+    ports:
+      - ${ADMINER_PORT}:8080
+    restart: always

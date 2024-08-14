@@ -1,76 +1,35 @@
-version: '3'
 services:
-  zookeeper:
-    container_name: zookeeper
-    image: confluentinc/cp-zookeeper:latest
-    ports:
-      - 2181:2181
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-    volumes:
-      - ./zookeeper/data:/data
-      - ./zookeeper/datalog:/datalog
-    restart: always
   kafka:
-    container_name: kafka
-    image: confluentinc/cp-kafka:latest
-    ports:
-      - 29092:29092
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
-    # volumes:
-    #   - ./kafka/data:/var/lib/kafka/data
-    #   - ./kafka/etc:/etc/kafka
-    restart: always
-    depends_on:
-      - zookeeper
+    extends:
+      file: parts/kafka-cluster.yml
+      service: kafka
+    networks:
+      - ${NETWORK_NAME}
   kafka2:
-    container_name: kafka2
-    image: confluentinc/cp-kafka:latest
-    ports:
-      - 29093:29092
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:29093
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
-    # volumes:
-    #   - ./kafka/data:/var/lib/kafka/data
-    #   - ./kafka/etc:/etc/kafka
-    restart: always
-    depends_on:
-      - zookeeper
+    extends:
+      file: parts/kafka-cluster.yml
+      service: kafka2
+    networks:
+      - ${NETWORK_NAME}
   kafka3:
-    container_name: kafka3
-    image: confluentinc/cp-kafka:latest
-    ports:
-      - 29094:29092
-    environment:
-      KAFKA_BROKER_ID: 3
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:29094
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
-    # volumes:
-    #   - ./kafka/data:/var/lib/kafka/data
-    #   - ./kafka/etc:/etc/kafka
-    restart: always
-    depends_on:
-      - zookeeper
+    extends:
+      file: parts/kafka-cluster.yml
+      service: kafka3
+    networks:
+      - ${NETWORK_NAME}
+  zookeeper:
+    extends:
+      file: parts/kafka-cluster.yml
+      service: zookeeper
+    networks:
+      - ${NETWORK_NAME}
   kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    ports:
-      - 8080:8080
-    environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092,kafka2:29093,kafka3:29094
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-    restart: always
-    depends_on:
-      - kafka
-      - kafka2
-      - kafka3
-      - zookeeper
+    extends:
+      file: parts/kafka-cluster.yml
+      service: kafka-ui
+    networks:
+      - ${NETWORK_NAME}
+networks:
+  telematic:
+    name: ${NETWORK_NAME}
+    external: ${IS_NETWORK_EXTERNAL}

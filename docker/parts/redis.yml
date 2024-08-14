@@ -1,0 +1,17 @@
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ${REDIS_HOST_VOLUMES_PATH}:/data
+    restart: always
+  redisinsight:
+    image: oblakstudio/redisinsight:latest
+    profiles:
+      - ui
+    ports:
+      - ${REDIS_UI_PORT}:5540
+    volumes:
+      - ${REDIS_UI_HOST_VOLUMES_PATH}:/data
+    restart: always
