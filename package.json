@@ -9,6 +9,7 @@
     "serve:sub": "nodemon --files ./tests/mqtt/src/subscriber.ts",
     "serve:pub": "nodemon --files ./tests/mqtt/src/publisher.ts",
     "serve:http": "nodemon --files ./tests/http/src/index.ts",
+    "serve:parse": "nodemon --files ./tests/parse/src/index.ts",
     "nodemon": "nodemon",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs}/**/*.{ts,js}\" --fix"
