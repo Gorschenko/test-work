@@ -15,6 +15,20 @@ const validate_packet_by_schema = (packet: Buffer, schema: PacketSchema): boolea
   return result;
 };
 
+const parse_U8Array = (packet: Buffer): string => {
+  const packet_to_string: string[] = [];
+  let inner_offset = 0;
+
+  for (const byte of packet) {
+    const parsed_string = packet.readUInt8(inner_offset).toString(16);
+    packet_to_string.push(parsed_string);
+    inner_offset += 1;
+  }
+
+  const parsed_packet = packet_to_string.join('');
+  return parsed_packet;
+};
+
 const parse_value = (packet: Buffer, offset: number, schema_item: SchemaItem) => {
   console.log(offset, schema_item);
   switch (schema_item.TYPE) {
@@ -27,8 +41,10 @@ const parse_value = (packet: Buffer, offset: number, schema_item: SchemaItem) =>
         .slice(offset, offset + schema_item.LENGTH)
         .toString('utf8')
         .replace(/\x00/g, '');
-    case Integer.U8Array:
-      return packet.slice(offset, offset + schema_item.LENGTH).toString('utf8');
+    case Integer.U8Array: {
+      const buffer_slice = packet.slice(offset, offset + schema_item.LENGTH);
+      return parse_U8Array(buffer_slice);
+    }
     default:
       throw new Error('Invalid integer type');
   }
