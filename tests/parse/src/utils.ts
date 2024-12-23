@@ -1,4 +1,12 @@
-import { Integer, PacketSchema, ParsedPacket, ParsedPublicPacket, SchemaItem } from './types';
+import { Integer, PacketSchema, ParsedPacket, SchemaItem } from './types';
+
+const split_string_by_dot = (source: string): string => {
+  return source.split('').join('.');
+};
+
+const reverse_string = (source: string): string => {
+  return source.split('').reverse().join('');
+};
 
 const get_packet_length_by_schema = (schema: PacketSchema): number => {
   const length = Object.values(schema).reduce((acc, v) => {
@@ -85,7 +93,7 @@ export const parse_packet = (packet: Buffer, schema: PacketSchema) => {
 };
 
 export const get_public_igla_packet = (parsed_packet: ParsedPacket) => {
-  const public_parsed_packet = Object.keys(parsed_packet).reduce<ParsedPublicPacket>((acc, k) => {
+  const public_parsed_packet = Object.keys(parsed_packet).reduce<ParsedPacket>((acc, k) => {
     acc[k] = parsed_packet[k].replace(/\x00/g, '');
     return acc;
   }, {});
@@ -96,12 +104,24 @@ export const get_public_igla_packet = (parsed_packet: ParsedPacket) => {
 };
 
 export const get_public_compass_packet = (parsed_packet: ParsedPacket) => {
-  const public_parsed_packet = Object.keys(parsed_packet).reduce<ParsedPublicPacket>((acc, k) => {
-    acc[k] = parsed_packet[k].replace(/\x00/g, '');
-    return acc;
-  }, {});
+  if (parsed_packet.revision) {
+    parsed_packet.revision = split_string_by_dot(parsed_packet.revision);
+  }
 
-  console.log('PUBLIC PARSED PACKET: ', public_parsed_packet);
+  if (parsed_packet.hw_ver) {
+    parsed_packet.hw_ver = split_string_by_dot(parsed_packet.hw_ver);
+  }
 
-  return public_parsed_packet;
+  if (parsed_packet.fw_ver) {
+    parsed_packet.fw_ver = parsed_packet.fw_ver.split('0').join('.').slice(0, -1);
+  }
+
+  if (parsed_packet.model) {
+    const reversed_model = reverse_string(parsed_packet.model);
+    parsed_packet.model = reversed_model;
+  }
+
+  console.log('PUBLIC PARSED PACKET: ', parsed_packet);
+
+  return parsed_packet;
 };
