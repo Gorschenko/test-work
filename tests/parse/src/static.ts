@@ -3,9 +3,9 @@ const IGLA_GET_SYS_INFO_TO_BASE64 =
   'cAAEWDAwMDA0NQCYYje3YmF0bW9iaWxlX2RlZgAAAAAAAAAAAAAAAAAAAAAAAAAqAHYxLjIuM2EyNDA5MjUAAAAAAAAAdjguMS4wXzI0MDMyOQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMQAtABhQS0Y0MDMgwHW4XDg2MzE5MjA1OTcyNDY0MgAAODk3MDEwMTI0MTgyMTkzNDQ2MTgA';
 
 const COMPASS_GET_SYS_INFO_TO_BASE64 =
-  'cAACAWGpAAAEAAH/AAcBAAEAEwASUHJvZHVjdGlvbiBzYW1wbGVzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMv/YBU1YMTEFchJDmJWLC4ZIZgVjhCgYiXAQEkGCAmkyAw==';
+  'cAACAb+rAAAEAAH/AAcBAAEAEwASUHJvZHVjdGlvbiBzYW1wbGVzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM//OBU1YMTQRghFDPDo3D4ZIZgVjRyYgiXAQGClBIxgRIQ==';
 
-export const GET_SYS_INFO_TO_BASE64 = COMPASS_GET_SYS_INFO_TO_BASE64;
+export const GET_SYS_INFO_TO_BASE64 = IGLA_GET_SYS_INFO_TO_BASE64;
 // console.log('BASE64: ', GET_SYS_INFO_TO_BASE64, 'LENGTH: ', GET_SYS_INFO_TO_BASE64.length);
 
 export const GET_SYS_INFO_TO_BINARY = Buffer.from(GET_SYS_INFO_TO_BASE64, 'base64');
@@ -18,67 +18,67 @@ export const GET_SYS_INFO_TO_ASCII = GET_SYS_INFO_TO_BINARY.toString('ascii');
 // console.log('ASCII: ', GET_SYS_INFO_TO_ASCII, 'LENGTH: ', GET_SYS_INFO_TO_ASCII.length);
 
 export const IGLA_BASE_SCHEMA: PacketSchema = {
-  CODE: {
+  code: {
     LENGTH: 1,
     TYPE: Integer.U8,
   },
-  RESULT: {
+  result: {
     LENGTH: 1,
     TYPE: Integer.U8,
   },
-  REVISION: {
+  revision: {
     LENGTH: 1,
     TYPE: Integer.U8,
   },
-  SERIAL: {
+  serial_number: {
     LENGTH: 8,
     TYPE: Integer.CHAR,
   },
-  DEVICE_FAMILY: {
+  device_family: {
     LENGTH: 4,
     TYPE: Integer.U8Array,
   },
-  CAR_ID: {
+  car_id: {
     LENGTH: 4,
     TYPE: Integer.U32,
   },
-  CAR_NAME: {
+  car_name: {
     LENGTH: 32,
     TYPE: Integer.CHAR,
   },
-  DEVICE_ID: {
+  device_id: {
     LENGTH: 1,
     TYPE: Integer.U8,
   },
-  HW_VER: {
+  hw_ver: {
     LENGTH: 1,
     TYPE: Integer.U8,
   },
-  FW_VER: {
+  fw_ver: {
     LENGTH: 20,
     TYPE: Integer.CHAR,
   },
-  RADIO_VER: {
+  radio_ver: {
     LENGTH: 20,
     TYPE: Integer.CHAR,
   },
-  EXT_INFO: {
+  ext_info: {
     LENGTH: 64,
     TYPE: Integer.CHAR,
   },
-  MCU_SERIAL: {
+  mcu_serial: {
     LENGTH: 12,
     TYPE: Integer.U8Array,
   },
-  PRODUCTION_DATE: {
+  production_date: {
     LENGTH: 4,
     TYPE: Integer.U32,
   },
-  IMEI: {
+  imei: {
     LENGTH: 17,
     TYPE: Integer.CHAR,
   },
-  ICCID: {
+  iccid: {
     LENGTH: 21,
     TYPE: Integer.CHAR,
   },
@@ -86,63 +86,63 @@ export const IGLA_BASE_SCHEMA: PacketSchema = {
 
 export const get_0x30_igla_schema = (): PacketSchema => {
   const SCHEMA = { ...IGLA_BASE_SCHEMA };
-  delete SCHEMA.CAR_ID;
-  delete SCHEMA.DEVICE_ID;
+  delete SCHEMA.car_id;
+  delete SCHEMA.device_id;
   return SCHEMA;
 };
 
 export const get_0x40_igla_schema = (): PacketSchema => {
   const SCHEMA = { ...IGLA_BASE_SCHEMA };
-  delete SCHEMA.DEVICE_FAMILY;
+  delete SCHEMA.device_family;
   return SCHEMA;
 };
 
 export const COMPASS_SCHEMA: PacketSchema = {
-  CODE: {
+  code: {
     LENGTH: 1,
     TYPE: Integer.U8,
   },
-  RESULT: {
+  result: {
     LENGTH: 1,
     TYPE: Integer.U8,
   },
-  PROTOCOL_REVISION: {
+  revision: {
     LENGTH: 2,
     TYPE: Integer.U8Array,
   },
-  SERIAL: {
+  serial_number: {
     LENGTH: 4,
     TYPE: Integer.U8Array,
   },
-  MODEL: {
+  model: {
     LENGTH: 4,
     TYPE: Integer.U8Array,
   },
-  HW_VER: {
+  hw_ver: {
     LENGTH: 2,
     TYPE: Integer.U8Array,
   },
-  FW_VER: {
+  fw_ver: {
     LENGTH: 6,
     TYPE: Integer.U8Array,
   },
-  EXT_INFO: {
+  ext_info: {
     LENGTH: 64,
     TYPE: Integer.U8Array,
   },
-  MCU_SERIAL: {
+  mcu_serial: {
     LENGTH: 12,
     TYPE: Integer.U8Array,
   },
-  PRODUCTION_DATE: {
+  production_date: {
     LENGTH: 4,
     TYPE: Integer.U8Array,
   },
-  IMEI: {
+  imei: {
     LENGTH: 8,
     TYPE: Integer.U8Array,
   },
-  ICCID: {
+  iccid: {
     LENGTH: 10,
     TYPE: Integer.U8Array,
   },

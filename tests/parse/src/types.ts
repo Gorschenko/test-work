@@ -8,3 +8,5 @@ export enum Integer {
 export type PacketSchema = Record<string, SchemaItem>;
 
 export type SchemaItem = { LENGTH: number; TYPE: Integer };
+
+export type ParsedPacket = { [key: string]: string };

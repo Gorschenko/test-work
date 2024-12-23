@@ -29,5 +29,4 @@ const parse_igla_iccid = (packet: Buffer) => {
 
 // parse_igla_iccid(data.GET_SYS_INFO_TO_BINARY);
 
-const parsed_packet = parse_packet(GET_SYS_INFO_TO_BINARY, COMPASS_SCHEMA);
-console.log('PARSED PACKET: ', parsed_packet);
+const parsed_packet = parse_packet(GET_SYS_INFO_TO_BINARY, get_0x40_igla_schema());
