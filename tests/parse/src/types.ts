@@ -9,4 +9,6 @@ export type PacketSchema = Record<string, SchemaItem>;
 
 export type SchemaItem = { LENGTH: number; TYPE: Integer };
 
-export type ParsedPacket = { [key: string]: string };
+export type ParsedPacket<> = { [key: string]: string };
+
+export type ParsedPublicPacket = { [key: string]: any };

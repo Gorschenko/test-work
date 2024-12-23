@@ -1,5 +1,5 @@
 import { COMPASS_SCHEMA, get_0x40_igla_schema, GET_SYS_INFO_TO_BINARY } from './static';
-import { parse_packet } from './utils';
+import { get_public_compass_packet, get_public_igla_packet, parse_packet } from './utils';
 
 const parse_igla_iccid = (packet: Buffer) => {
   let iccidBuf: Buffer;
@@ -29,4 +29,5 @@ const parse_igla_iccid = (packet: Buffer) => {
 
 // parse_igla_iccid(data.GET_SYS_INFO_TO_BINARY);
 
-const parsed_packet = parse_packet(GET_SYS_INFO_TO_BINARY, get_0x40_igla_schema());
+const parsed_packet = parse_packet(GET_SYS_INFO_TO_BINARY, COMPASS_SCHEMA);
+// const public_parsed_packet = get_public_compass_packet(parsed_packet);

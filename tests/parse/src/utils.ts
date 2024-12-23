@@ -1,4 +1,4 @@
-import { Integer, PacketSchema, ParsedPacket, SchemaItem } from './types';
+import { Integer, PacketSchema, ParsedPacket, ParsedPublicPacket, SchemaItem } from './types';
 
 const get_packet_length_by_schema = (schema: PacketSchema): number => {
   const length = Object.values(schema).reduce((acc, v) => {
@@ -29,10 +29,6 @@ const parse_chars_by_packet = (
   end_offset: number,
 ): string => {
   return packet.slice(start_offset, end_offset).toString('utf8');
-  // return packet
-  // .slice(offset, offset + schema_item.LENGTH)
-  // .toString('utf8')
-  // .replace(/\x00/g, '');
 };
 
 const parse_U8Array = (packet: Buffer, start_offset: number, end_offset: number): string => {
@@ -88,4 +84,24 @@ export const parse_packet = (packet: Buffer, schema: PacketSchema) => {
   return parsed_packet;
 };
 
-export const get_public_igla_packet = () => {};
+export const get_public_igla_packet = (parsed_packet: ParsedPacket) => {
+  const public_parsed_packet = Object.keys(parsed_packet).reduce<ParsedPublicPacket>((acc, k) => {
+    acc[k] = parsed_packet[k].replace(/\x00/g, '');
+    return acc;
+  }, {});
+
+  console.log('PUBLIC PARSED PACKET: ', public_parsed_packet);
+
+  return public_parsed_packet;
+};
+
+export const get_public_compass_packet = (parsed_packet: ParsedPacket) => {
+  const public_parsed_packet = Object.keys(parsed_packet).reduce<ParsedPublicPacket>((acc, k) => {
+    acc[k] = parsed_packet[k].replace(/\x00/g, '');
+    return acc;
+  }, {});
+
+  console.log('PUBLIC PARSED PACKET: ', public_parsed_packet);
+
+  return public_parsed_packet;
+};
