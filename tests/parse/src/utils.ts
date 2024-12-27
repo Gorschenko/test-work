@@ -1,7 +1,7 @@
 import { Integer, PacketSchema, ParsedPacket, SchemaItem } from './types';
 
 const split_string_by_dot = (source: string): string => {
-  return source.split('').join('.');
+  return source.replace(/0/g, '').padEnd(3, '0').split('').join('.');
 };
 
 const reverse_string = (source: string): string => {
@@ -24,7 +24,7 @@ const validate_packet_by_schema = (packet: Buffer, schema: PacketSchema): boolea
 };
 
 const parse_UInt8_by_packet = (packet: Buffer, offset: number): string => {
-  return packet.readUInt8(offset).toString(16);
+  return packet.readUInt8(offset).toString(16).padStart(2, '0');
 };
 
 const parse_UInt32_by_packet = (packet: Buffer, offset: number): string => {
@@ -39,7 +39,7 @@ const parse_chars_by_packet = (
   return packet.slice(start_offset, end_offset).toString('utf8');
 };
 
-const parse_U8Array = (packet: Buffer, start_offset: number, end_offset: number): string => {
+const parse_UInt8Array = (packet: Buffer, start_offset: number, end_offset: number): string => {
   const buffer_slice = packet.slice(start_offset, end_offset);
   const packet_to_string: string[] = [];
   let inner_offset = 0;
@@ -63,7 +63,7 @@ const parse_value = (packet: Buffer, offset: number, schema_item: SchemaItem) =>
     case Integer.CHAR:
       return parse_chars_by_packet(packet, offset, offset + schema_item.LENGTH);
     case Integer.U8Array: {
-      return parse_U8Array(packet, offset, offset + schema_item.LENGTH);
+      return parse_UInt8Array(packet, offset, offset + schema_item.LENGTH);
     }
     default:
       throw new Error('Invalid integer type');
@@ -108,17 +108,17 @@ export const get_public_compass_packet = (parsed_packet: ParsedPacket) => {
     parsed_packet.revision = split_string_by_dot(parsed_packet.revision);
   }
 
+  if (parsed_packet.model) {
+    const reversed_model = reverse_string(parsed_packet.model);
+    parsed_packet.model = reversed_model;
+  }
+
   if (parsed_packet.hw_ver) {
     parsed_packet.hw_ver = split_string_by_dot(parsed_packet.hw_ver);
   }
 
   if (parsed_packet.fw_ver) {
-    parsed_packet.fw_ver = parsed_packet.fw_ver.split('0').join('.').slice(0, -1);
-  }
-
-  if (parsed_packet.model) {
-    const reversed_model = reverse_string(parsed_packet.model);
-    parsed_packet.model = reversed_model;
+    parsed_packet.fw_ver = split_string_by_dot(parsed_packet.fw_ver);
   }
 
   console.log('PUBLIC PARSED PACKET: ', parsed_packet);
