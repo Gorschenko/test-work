@@ -6,5 +6,5 @@ import {
 } from './static';
 import { get_public_compass_packet, get_public_igla_packet, parse_packet } from './utils';
 
-const parsed_packet = parse_packet(GET_SYS_INFO_TO_BASE64, COMPASS_SCHEMA);
+const parsed_packet = parse_packet(GET_SYS_INFO_TO_BINARY, COMPASS_SCHEMA);
 const public_parsed_packet = get_public_compass_packet(parsed_packet);

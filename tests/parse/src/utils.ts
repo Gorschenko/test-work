@@ -1,11 +1,24 @@
 import { Integer, PacketSchema, ParsedPacket, SchemaItem } from './types';
 
-const split_string_by_dot = (source: string): string => {
-  return source.replace(/0/g, '').padEnd(3, '0').split('').join('.');
-};
+// const split_string_by_dot = (source: string, depth: number): string => {
+//   return source.replace(/0/g, '').padEnd(depth, '0').split('').join('.');
+// };
 
-const reverse_string = (source: string): string => {
-  return source.split('').reverse().join('');
+const split_string_by_dot = (str: string): string => {
+  const split_to_array = str.match(/.{1,2}/g);
+  const is_zero_first = split_to_array[0] === '00' ? true : false;
+
+  let result = split_to_array
+    .map((i) => i.replace(/00/g, ''))
+    .filter((i) => i)
+    .map((i) => i.replace(/0/g, ''))
+    .join('.');
+
+  if (is_zero_first) {
+    result = '0' + '.' + result;
+  }
+
+  return result;
 };
 
 const get_packet_length_by_schema = (schema: PacketSchema): number => {
@@ -106,11 +119,6 @@ export const get_public_igla_packet = (parsed_packet: ParsedPacket) => {
 export const get_public_compass_packet = (parsed_packet: ParsedPacket) => {
   if (parsed_packet.revision) {
     parsed_packet.revision = split_string_by_dot(parsed_packet.revision);
-  }
-
-  if (parsed_packet.model) {
-    const reversed_model = reverse_string(parsed_packet.model);
-    parsed_packet.model = reversed_model;
   }
 
   if (parsed_packet.hw_ver) {
